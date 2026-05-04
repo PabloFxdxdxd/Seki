@@ -12,9 +12,11 @@ class AppDatabase extends _$AppDatabase {
 
   @override
   int get schemaVersion => 1;
-}
 
- 
+  //Funciones de la base de datos
+
+
+}
 
 
 LazyDatabase _openConnection() {

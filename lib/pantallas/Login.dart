@@ -1,0 +1,184 @@
+import 'package:flutter/material.dart';
+import 'package:proyect_seki/database/database.dart'; //Donde están las funciones de la base de datos
+import 'package:drift/drift.dart' as d;
+
+class PantallaLogin extends StatefulWidget { 
+
+  @override
+  State<PantallaLogin> createState() => _PantallaLoginState();
+
+}
+
+class _PantallaLoginState extends State<PantallaLogin> {
+
+
+  //-----------------Backend--------------------
+
+  //Se definen las funciones para trabajar con la base de datos
+
+  void entrar(){
+    print("Sesión iniciada");
+  }
+
+  void navegarRegistro(){
+    print("Registrarse");
+    Navigator.pushNamed(context, '/ejemplo');
+  }
+
+
+  //-----------------Frontend--------------------
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    return Scaffold(
+      backgroundColor: colors.secondary,
+      body: Center(
+        
+        
+        child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30), //Margen a la izquierda y derecha
+
+        //Utilicen este widget para que scrolee al momento de insertar texto, sino tira un error
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center, //Centrar verticalmente
+            crossAxisAlignment: CrossAxisAlignment.start, //Alineación a la izquierda
+          
+            children: [
+              //Titulo
+              Text("Iniciar sesión", style: TextStyle(
+                fontSize: 32, 
+                fontWeight: FontWeight.bold, 
+                color: Colors.white)),
+              const SizedBox(height: 40), //separa los elementos con un espacio
+              
+              //Campo de Correo
+              Text(
+                  "Correo electrónico", 
+                  style: TextStyle(
+          
+                    color: Colors.white,
+                    fontSize: 15
+                  )
+              ),
+              const SizedBox(height: 8),
+              TextField(
+          
+                  decoration: InputDecoration(
+                  hintText: "name@example.com",
+                  filled: true,
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
+          
+                ),
+              ),
+              
+              const SizedBox(height: 20),
+              
+            //Campo de contraseña
+          
+              Text(
+                  "Contraseña", 
+                  style: TextStyle(
+          
+                    color: Colors.white,
+                    fontSize: 15
+                  )
+              ),
+              const SizedBox(height: 8),
+              TextField(
+                  obscureText: true,
+                  decoration: InputDecoration(
+                  hintText: "Introduce tu contraseña",
+                  filled: true,
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
+          
+                ),
+              ),
+              const SizedBox(height: 20),
+          
+              //Botón de inicio
+              Center( 
+                child: ElevatedButton(
+                  onPressed: entrar,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: colors.inversePrimary, 
+                    minimumSize: Size(double.infinity, 50), //Botón ancho
+                  ),
+                  child: Text("Entrar"),
+                ),
+              ),
+          
+              const SizedBox(height: 20),
+          
+              Center(
+                child: Text(
+                  "O",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15
+                  )
+                 ),
+              ),
+          
+              const SizedBox(height: 20),
+          
+              //Otras opciones de inicio
+          
+              Center(
+                child: ElevatedButton.icon(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white, 
+                    minimumSize: Size(double.infinity, 50),
+                    
+                  ),
+                  icon: Image.asset('assets/icons/google.png', height: 24),
+                  label: Text(
+                    "Continuar con Google",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 15
+                  )
+                )
+              )
+              ),
+            
+             const SizedBox(height: 30),
+          
+             //Para registrarse
+          
+              Text(
+                "¿No tienes Cuenta?",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15
+                )
+                ),
+              
+              const SizedBox(height: 10),
+              Center( 
+                child: ElevatedButton(
+                  onPressed: () {navegarRegistro();},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: colors.inversePrimary, 
+                    minimumSize: Size(double.infinity, 50), 
+                  ),
+                  child: Text("¡Registrarse!"),
+                ),
+              )
+          
+          
+          
+            ],
+          ),
+        ),
+      )
+      ),
+       
+    );
+  }
+ 
+}
