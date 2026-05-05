@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:proyect_seki/database/database.dart'; //Donde están las funciones de la base de datos
 import 'package:drift/drift.dart' as d;
+import 'package:proyect_seki/main.dart'; // Cambia 'proyect_seki' por el nombre real de tu proyecto
 
 class PantallaLogin extends StatefulWidget { 
 
@@ -14,15 +15,51 @@ class _PantallaLoginState extends State<PantallaLogin> {
 
   //-----------------Backend--------------------
 
+  //Controladores para obtener la información de los campos de texto
+
+  final correoController = TextEditingController();
+  final passwordController = TextEditingController();
+
+
   //Se definen las funciones para trabajar con la base de datos
 
-  void entrar(){
-    print("Sesión iniciada");
+  
+
+  void entrar() async{ //Validación y redirección del login
+    
+    if(await globalDatabase.validarCredenciales(correoController.text, passwordController.text)){
+      if(await globalDatabase.esAdministrador(correoController.text)){
+        if (!mounted) return; //Si se usará Navigator.push en una función asincrona debe ir el if (!mounted) para evitar brechas de seguridad
+        Navigator.pushNamed(context, '/admin');
+      }else{
+        if (!mounted) return;
+        Navigator.pushNamed(context, '/inicio');
+      }
+    }else {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Correo o contraseña incorrectos")),
+    );
+  }
+
   }
 
   void navegarRegistro(){
     print("Registrarse");
-    Navigator.pushNamed(context, '/ejemplo');
+    Navigator.pushNamed(context, '/signin');
+  }
+
+  void funcGoogle(){
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Inicio de sesión no disponible")),
+    );
+  }
+
+  @override
+  void dispose() {
+    passwordController.dispose();
+    correoController.dispose();
+    super.dispose();
   }
 
 
@@ -57,14 +94,14 @@ class _PantallaLoginState extends State<PantallaLogin> {
               Text(
                   "Correo electrónico", 
                   style: TextStyle(
-          
+                    
                     color: Colors.white,
                     fontSize: 15
                   )
               ),
               const SizedBox(height: 8),
               TextField(
-          
+                  controller: correoController,
                   decoration: InputDecoration(
                   hintText: "name@example.com",
                   filled: true,
@@ -89,6 +126,7 @@ class _PantallaLoginState extends State<PantallaLogin> {
               const SizedBox(height: 8),
               TextField(
                   obscureText: true,
+                  controller: passwordController,
                   decoration: InputDecoration(
                   hintText: "Introduce tu contraseña",
                   filled: true,
@@ -129,7 +167,7 @@ class _PantallaLoginState extends State<PantallaLogin> {
           
               Center(
                 child: ElevatedButton.icon(
-                  onPressed: () {},
+                  onPressed: funcGoogle,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white, 
                     minimumSize: Size(double.infinity, 50),
