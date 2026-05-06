@@ -16,17 +16,13 @@ class AppDatabase extends _$AppDatabase {
   //Funciones de la base de datos (Tienen que ser Future porque el programa necesita tiempo para hacer las consultas)
 
   //Validar credenciales (inicio de sesión)
-  Future<bool> validarCredenciales(String email, String password) async {
+  Future<UserData?> validarCredenciales(String email, String password) async {
     //Se busca un usuario que coincida ambos
     final usuario = await (select(user)
           ..where((t) => t.email.equals(email) & t.password.equals(password)))
         .getSingleOrNull();
 
-    if(usuario == null){
-      return false;
-    }else{
-      return true;
-    }
+  return usuario;
   }
 
   //Obtener si es administrador o usuario
