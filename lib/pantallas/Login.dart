@@ -26,13 +26,14 @@ class _PantallaLoginState extends State<PantallaLogin> {
   
 
   void entrar() async{ //Validación y redirección del login
-    
-    if(await globalDatabase.validarCredenciales(correoController.text, passwordController.text)){
-      if(await globalDatabase.esAdministrador(correoController.text)){
-        if (!mounted) return; //Si se usará Navigator.push en una función asincrona debe ir el if (!mounted) para evitar brechas de seguridad
+    final usuario = await globalDatabase.validarCredenciales(correoController.text, passwordController.text);
+    if (!mounted) return; //Si se usará Navigator.push en una función asincrona debe ir el if (!mounted) para evitar brechas de seguridad
+
+    if(usuario != null){
+      currentUser = usuario;
+      if(usuario.type.contains("admin")){
         Navigator.pushNamed(context, '/admin');
       }else{
-        if (!mounted) return;
         Navigator.pushNamed(context, '/inicio');
       }
     }else {

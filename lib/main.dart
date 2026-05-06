@@ -8,6 +8,7 @@ import 'package:proyect_seki/pantallas/Login.dart';
 import 'package:proyect_seki/pantallas/pantallaEjemplo.dart';
 
 late AppDatabase globalDatabase;
+UserData? currentUser;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
