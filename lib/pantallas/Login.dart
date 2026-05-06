@@ -22,10 +22,10 @@ class _PantallaLoginState extends State<PantallaLogin> {
 
   void navegarRegistro(){
     print("Registrarse");
-    Navigator.pushNamed(context, '/ejemplo');
+    Navigator.pushNamed(context, '/signin');
   }
 
-
+  
   //-----------------Frontend--------------------
 
   @override
