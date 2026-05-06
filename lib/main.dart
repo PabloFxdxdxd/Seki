@@ -10,6 +10,7 @@ import 'package:proyect_seki/pantallas/pantallaEjemplo.dart';
 import 'package:proyect_seki/pantallas/SignIn.dart';
 
 late AppDatabase globalDatabase;
+UserData? currentUser;
 
 
 void main() {
