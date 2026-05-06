@@ -65,8 +65,8 @@ class User extends Table with TableInfo<User, UserData> {
     false,
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
-    $customConstraints: 'NOT NULL DEFAULT CURRENT_TIME',
-    defaultValue: const CustomExpression('CURRENT_TIME'),
+    $customConstraints: 'NOT NULL DEFAULT CURRENT_TIMESTAMP',
+    defaultValue: const CustomExpression('CURRENT_TIMESTAMP'),
   );
   @override
   List<GeneratedColumn> get $columns => [
@@ -522,8 +522,8 @@ class Activity extends Table with TableInfo<Activity, ActivityData> {
     false,
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
-    $customConstraints: 'NOT NULL DEFAULT CURRENT_TIME',
-    defaultValue: const CustomExpression('CURRENT_TIME'),
+    $customConstraints: 'NOT NULL DEFAULT CURRENT_TIMESTAMP',
+    defaultValue: const CustomExpression('CURRENT_TIMESTAMP'),
   );
   @override
   List<GeneratedColumn> get $columns => [
@@ -1130,8 +1130,8 @@ class ActivityLogs extends Table with TableInfo<ActivityLogs, ActivityLog> {
     false,
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
-    $customConstraints: 'NOT NULL DEFAULT CURRENT_TIME',
-    defaultValue: const CustomExpression('CURRENT_TIME'),
+    $customConstraints: 'NOT NULL DEFAULT CURRENT_TIMESTAMP',
+    defaultValue: const CustomExpression('CURRENT_TIMESTAMP'),
   );
   @override
   List<GeneratedColumn> get $columns => [id, activityId, status, loggedAt];
