@@ -49,7 +49,7 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
                 widthFactor: 0.7,
                 child: TextField(
                   decoration: InputDecoration(
-                  hintText: "Nombre",
+                  hintText: "Nombre de usuario",
                   filled: true,
                   fillColor: Colors.white,
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),  
