@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 import 'package:proyect_seki/database/database.dart';
 
 
@@ -7,10 +8,11 @@ import 'package:proyect_seki/database/database.dart';
 import 'package:proyect_seki/pantallas/Login.dart';
 import 'package:proyect_seki/pantallas/pantallaEjemplo.dart';
 import 'package:proyect_seki/pantallas/usuario/AgendaHome.dart';
-
+import 'package:proyect_seki/pantallas/SignIn.dart';
 
 late AppDatabase globalDatabase;
 UserData? currentUser;
+
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,8 +37,9 @@ class MyApp extends StatelessWidget {
       initialRoute: '/', // La ruta que carga al abrir la app
       routes: {
         '/': (context) => PantallaLogin(),
-        '/ejemplo': (context) => PantallaEjemplo(),
-        '/agendaHome': (context) => AgendaHome()
+        '/agendaHome': (context) => AgendaHome(),
+        '/signin': (context) => PantallaRegistro(),
+        '/ejemplo': (context) => PantallaEjemplo()
       },
     );
   }
