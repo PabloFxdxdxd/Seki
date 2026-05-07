@@ -33,74 +33,78 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 159, 232, 236),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            FractionallySizedBox(
-              widthFactor: 0.7,
-              child: Icon(
-                size: 200.0,
-                color: const Color.fromARGB(255, 29, 124, 123),
-                Icons.person_rounded,
-              ),
-            ),
-            //nombre de Usuario
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
               FractionallySizedBox(
                 widthFactor: 0.7,
-                child: TextField(
-                  decoration: InputDecoration(
-                  hintText: "Nombre de usuario",
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),  
-                  ),
+                child: Icon(
+                  size: 200.0,
+                  color: const Color.fromARGB(255, 29, 124, 123),
+                  Icons.person_rounded,
                 ),
               ),
-            
-            //correo electronico
-              FractionallySizedBox(
-                widthFactor: 0.7,
-                child: TextField(
-                  decoration: InputDecoration(
-                  hintText: "Correo electrónico",
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),  
-                  ),
-                ),
-              ),
-            
-            //Campo de contraseña
-              FractionallySizedBox(
-                widthFactor: 0.7,
-                child: TextField(
-                    obscureText: true,
+              SizedBox(height: 20,),
+              //nombre de Usuario
+                FractionallySizedBox(
+                  widthFactor: 0.7,
+                  child: TextField(
                     decoration: InputDecoration(
-                    hintText: "Crear contraseña",
+                    hintText: "Nombre de usuario",
                     filled: true,
                     fillColor: Colors.white,
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
-                          
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),  
+                    ),
                   ),
                 ),
-              ),
-
-              //Verificacion de contraseña
-              FractionallySizedBox(
-                widthFactor: 0.7,
-                child: TextField(
-                    obscureText: true,
+              SizedBox(height: 20,),
+              //correo electronico
+                FractionallySizedBox(
+                  widthFactor: 0.7,
+                  child: TextField(
                     decoration: InputDecoration(
-                    hintText: "Verificar contraseña",
+                    hintText: "Correo electrónico",
                     filled: true,
                     fillColor: Colors.white,
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
-                          
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),  
+                    ),
                   ),
                 ),
-              ),
-            ElevatedButton(onPressed: insertar, child: Text("Registrarse")),
-          ]
+              SizedBox(height: 20,),
+              //Campo de contraseña
+                FractionallySizedBox(
+                  widthFactor: 0.7,
+                  child: TextField(
+                      obscureText: true,
+                      decoration: InputDecoration(
+                      hintText: "Crear contraseña",
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
+                            
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20,),
+                //Verificacion de contraseña
+                FractionallySizedBox(
+                  widthFactor: 0.7,
+                  child: TextField(
+                      obscureText: true,
+                      decoration: InputDecoration(
+                      hintText: "Verificar contraseña",
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
+                            
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20,),
+              ElevatedButton(onPressed: insertar, child: Text("Registrarse")),
+            ]
+          ),
         ),
       ),
 
