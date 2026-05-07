@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:proyect_seki/database/database.dart';
-import 'package:drift/drift.dart' as d;
+
 
 //Importación de pantallas
 
 import 'package:proyect_seki/pantallas/Login.dart';
 import 'package:proyect_seki/pantallas/pantallaEjemplo.dart';
+import 'package:proyect_seki/pantallas/usuario/AgendaHome.dart';
+
 
 late AppDatabase globalDatabase;
 UserData? currentUser;
@@ -33,7 +35,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/', // La ruta que carga al abrir la app
       routes: {
         '/': (context) => PantallaLogin(),
-        '/ejemplo': (context) => PantallaEjemplo()
+        '/ejemplo': (context) => PantallaEjemplo(),
+        '/agendaHome': (context) => AgendaHome()
       },
     );
   }

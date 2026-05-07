@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:proyect_seki/database/database.dart'; //Donde están las funciones de la base de datos
-import 'package:drift/drift.dart' as d;
 import 'package:proyect_seki/main.dart'; // Cambia 'proyect_seki' por el nombre real de tu proyecto
 
 class PantallaLogin extends StatefulWidget { 
@@ -34,7 +32,7 @@ class _PantallaLoginState extends State<PantallaLogin> {
       if(usuario.type.contains("admin")){
         Navigator.pushNamed(context, '/admin');
       }else{
-        Navigator.pushNamed(context, '/inicio');
+        Navigator.pushNamed(context, '/home');
       }
     }else {
     if (!mounted) return;
