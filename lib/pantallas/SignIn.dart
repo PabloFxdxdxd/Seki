@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:proyect_seki/core/Colores.dart';
 import 'package:proyect_seki/database/database.dart'; //Donde están las funciones de la base de datos
 import 'package:drift/drift.dart' as d;
+import 'package:proyect_seki/main.dart';
+
 
 class PantallaRegistro extends StatefulWidget { 
 
@@ -15,15 +17,29 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
 
   //-----------------Backend--------------------
 
+  //Controladores para obtener la información de los campos de texto
+
+  final nombreController = TextEditingController();
+  final correoController = TextEditingController();
+  final passwordController = TextEditingController();
+
   //Se definen las funciones para trabajar con la base de datos
 
   void insertar(){
+
+    globalDatabase.insertUser(
+      UserCompanion(
+        name: d.Value(nombreController.text),
+        email: d.Value(correoController.text),
+        password: d.Value(passwordController.text),
+        type: d.Value("user"),
+        createdAt: d.Value(DateTime.now())
+
+      )
+    );
     print("Usuario Insertado");
   }
 
-  void eliminar(){
-    print("Usuario Eliminado");
-  }
 
   //-----------------Frontend--------------------
 
