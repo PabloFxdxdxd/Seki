@@ -78,8 +78,25 @@ class AppDatabase extends _$AppDatabase {
     }
   }
 
+  //Para Obtener datos en vivo
 
+  //Obtener las tareas según el id del usuario
+  Stream<List<ActivityData>> verMisTareas(int userId) {
+    return (select(activity)..where((t) => t.userId.equals(userId))).watch();
+  }
 
+  //Modificación
+  Future<void> marcarCompletada(int id) async {
+    await (update(activity)..where((t) => t.id.equals(id))).write(ActivityCompanion(
+      isActive: Value(false),
+    ));
+  }
+
+  //Eliminación
+  Future<void> eliminarTarea(int id) async {
+    await (delete(activity)..where((t) => t.id.equals(id))).go();
+  }
+  
   
 
 
