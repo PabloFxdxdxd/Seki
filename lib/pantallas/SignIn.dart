@@ -28,7 +28,7 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
 
   void insertar() async{
 
-    if(passwordController.text != passwordVerificationController.text){
+    if(passwordController.text == passwordVerificationController.text){
       if(await globalDatabase.existeEmail(correoController.text)){
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
