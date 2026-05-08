@@ -32,7 +32,7 @@ class _PantallaLoginState extends State<PantallaLogin> {
       if(usuario.type.contains("admin")){
         Navigator.pushNamed(context, '/admin');
       }else{
-        Navigator.pushNamed(context, '/home');
+        Navigator.pushNamed(context, '/agendaHome');
       }
     }else {
     if (!mounted) return;
