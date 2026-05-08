@@ -64,6 +64,20 @@ class AppDatabase extends _$AppDatabase {
     return select(activityLogs).get();
   }
 
+  //Detectar si existe el email
+
+  Future<bool> existeEmail(String email) async {
+    final usuario = await (select(user)
+          ..where((t) => t.email.equals(email)))
+        .getSingleOrNull();
+        
+    if(usuario == null){
+      return false;
+    }else{
+      return true;
+    }
+  }
+
 
 
   
