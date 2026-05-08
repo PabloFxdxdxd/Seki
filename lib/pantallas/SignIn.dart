@@ -22,22 +22,49 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
   final nombreController = TextEditingController();
   final correoController = TextEditingController();
   final passwordController = TextEditingController();
+  final passwordVerificationController = TextEditingController();
 
   //Se definen las funciones para trabajar con la base de datos
 
-  void insertar(){
+  void insertar() async{
 
-    globalDatabase.insertUser(
-      UserCompanion(
-        name: d.Value(nombreController.text),
-        email: d.Value(correoController.text),
-        password: d.Value(passwordController.text),
-        type: d.Value("user"),
-        createdAt: d.Value(DateTime.now())
+    if(passwordController.text != passwordVerificationController.text){
+      if(await globalDatabase.existeEmail(correoController.text)){
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("El correo ya existe.")),
+        );
+        
+      }else{
+        globalDatabase.insertUser(
+        UserCompanion(
+          name: d.Value(nombreController.text),
+          email: d.Value(correoController.text),
+          password: d.Value(passwordController.text),
+          type: d.Value("user"),
+          createdAt: d.Value(DateTime.now())
 
-      )
-    );
-    print("Usuario Insertado");
+        )
+      );
+
+        if (!mounted) return;
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Usuario creado exitosamente")),
+        );
+        await Future.delayed(const Duration(seconds: 2));
+        if (!mounted) return;
+        Navigator.pushNamed(context, '/');
+      }
+      
+    }else{
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Las contraseñas no coinciden")),
+      );
+    }
+
+    
+    
   }
 
 
@@ -45,7 +72,7 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 159, 232, 236),
       body: Center(
@@ -66,6 +93,7 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
                 FractionallySizedBox(
                   widthFactor: 0.7,
                   child: TextField(
+                    controller: nombreController,
                     decoration: InputDecoration(
                     hintText: "Nombre de usuario",
                     filled: true,
@@ -79,6 +107,7 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
                 FractionallySizedBox(
                   widthFactor: 0.7,
                   child: TextField(
+                    controller: correoController,
                     decoration: InputDecoration(
                     hintText: "Correo electrónico",
                     filled: true,
@@ -92,6 +121,7 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
                 FractionallySizedBox(
                   widthFactor: 0.7,
                   child: TextField(
+                    controller: passwordController,
                       obscureText: true,
                       decoration: InputDecoration(
                       hintText: "Crear contraseña",
@@ -107,6 +137,7 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
                 FractionallySizedBox(
                   widthFactor: 0.7,
                   child: TextField(
+                      controller: passwordVerificationController,
                       obscureText: true,
                       decoration: InputDecoration(
                       hintText: "Verificar contraseña",
