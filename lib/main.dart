@@ -4,6 +4,7 @@ import 'package:proyect_seki/database/database.dart';
 import 'package:proyect_seki/core/Colores.dart';
 
 
+
 //Importación de pantallas
 
 import 'package:proyect_seki/pantallas/Login.dart';
@@ -12,6 +13,7 @@ import 'package:proyect_seki/pantallas/usuario/AgendaHome.dart';
 import 'package:proyect_seki/pantallas/SignIn.dart';
 import 'package:proyect_seki/pantallas/usuario/AgendaCalendario.dart';
 import 'package:proyect_seki/pantallas/usuario/AgendaHistorial.dart';
+import 'package:proyect_seki/pantallas/Home.dart';
 
 late AppDatabase globalDatabase;
 UserData? currentUser;
@@ -43,6 +45,7 @@ class MyApp extends StatelessWidget {
         '/agendaHome': (context) => AgendaHome(),
         '/signin': (context) => PantallaRegistro(),
         '/ejemplo': (context) => PantallaEjemplo(),
+        '/home' : (context) => const Home(),
         '/agendaCalendario': (context) => const AgendaCalendario(),
         '/agendaHistorial': (context) => const AgendaHistorial()
       },
