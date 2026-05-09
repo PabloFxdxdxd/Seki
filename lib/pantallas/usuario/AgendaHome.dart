@@ -27,10 +27,11 @@ class _AgendaHomeState extends State<AgendaHome> {
     globalDatabase.insertActivity(
                   ActivityCompanion(
                     type: d.Value("Task"),
-                    userId: d.Value(currentUser!.id),
-                    title: d.Value("Pasear a Canas"),
-                    details: d.Value("Por las mañanas se deberá pasear a Canas"),
-                    priority: d.Value("alta"),
+                    //userId: d.Value(currentUser!.id), 
+                    userId: d.Value(currentUser?.id ?? 0), // //si es nulo le pasamos un id por defecto (0) para que no tire error, pero debería ser el id del usuario logueado
+                    title: d.Value("Leer"),
+                    details: d.Value("Leer un capitulo de un libro"),
+                    priority: d.Value("baja"),
                     startDate: d.Value(DateTime.now()),
                     dueDate: d.Value(DateTime(2026, 10, 15, 10, 30)),
                     frequency: d.Value("weekly"),
@@ -77,17 +78,17 @@ class _AgendaHomeState extends State<AgendaHome> {
   Widget build(BuildContext context) {
     
     return Scaffold(
-      backgroundColor: Colores.backgroundClear,
+      backgroundColor: Colores.background,
       //Menú superior
       appBar: AppBar(
         title:Row(
           children:[
             CircleAvatar(
-              backgroundColor: Colors.grey[200],
+              backgroundColor: Colores.iconBackground,
               radius: 20,
               child: Icon(
                 Icons.person_outline, 
-                color: Colors.grey,
+                color: Colores.iconNormal,
               ),
             ),
             Padding(
@@ -96,86 +97,163 @@ class _AgendaHomeState extends State<AgendaHome> {
             )
           ]
         )
-        
-
       ),
+      
       body: Center(
-        
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-              
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: ElevatedButton(onPressed: (){},child: Text("Pendientes"))
+          //seccion de botones pendientes/completados y fecha
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colores.primaryTransparente, //Fondo color cian
+                        foregroundColor: Colores.secondary, // Color del texto
+                        elevation: 0, 
+                        side: const BorderSide(color: Colores.secondary, width: 2),
+                        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12), 
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      child: const Text(
+                        "Pendientes",
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colores.surface, // Fondo blanco no seleccionado
+                        foregroundColor: Colores.secondary, 
+                        elevation: 0, 
+                        side: const BorderSide(color: Colores.secondary, width: 2), 
+                        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      child: const Text(
+                        "Completados",
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: ElevatedButton(onPressed: (){},child: Text("Completados"))
-              )
-            ],),
-
-            Padding(
-              padding: const EdgeInsets.only(bottom: 30),
-              child: Text("Hoy ${Fecha.obtenerFecha()} "),
-            ),
-            Container(
-              width: 300,
-              height: 500,
-              color: Colores.secondary,
-
-              child: StreamBuilder<List<ActivityData>>(
-                      stream: globalDatabase.verMisTareas(currentUser!.id),
-                      builder: (context, snapshot) {
-                        if (!snapshot.hasData) return const CircularProgressIndicator();
-                        
-                        final tareas = snapshot.data!;
-
-                        return ListView.builder(
-                          itemCount: tareas.length,
-                          itemBuilder: (context, index) {
-                            final tarea = tareas[index];
-
-                            //Este widget permite que el elemento se deslize
-                            return Dismissible(
-                              key: Key(tarea.id.toString()),
-                              direction: DismissDirection.endToStart,
-                              onDismissed: (_) => globalDatabase.marcarCompletada(tarea.id),
-                              background: containerVerdeDeFondo(),
-                              
-                              //Para que detecte cuando se mantiene presionado
-                              child: GestureDetector(  
-                                onLongPress: () => mostrarOpcionEliminar(tarea.id),
-                                onTap: () => irADetalle(tarea),
-                                
-                                // La decoración de la tarea: /core/activityItems.dart
-                                child: itemTarea(tarea: tarea),
-                              ),
+        
+                Padding(
+                  padding: const EdgeInsets.only(top: 20, bottom: 15),
+                  child: Text(
+                      Fecha.obtenerFecha(),
+                    style: TextStyle(
+                      fontSize: 22, 
+                      fontWeight: FontWeight.bold, 
+                      color: Colores.textPrimary
+                    )
+                  ),
+                ),
+              
+              Expanded(
+                child: Container(
+                  width: 350,
+                  color: Colores.secondaryTransparente,
+                  child: StreamBuilder<List<ActivityData>>(
+                          //si es nulo le pasamos un id por defecto (0) para que no tire error, pero debería ser el id del usuario logueado
+                          //stream: globalDatabase.verMisTareas(currentUser!.id),
+                          stream: globalDatabase.verMisTareas(currentUser?.id ?? 0), 
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) return const CircularProgressIndicator();
+                            
+                            final tareas = snapshot.data!;
+                          
+                            return ListView.builder(
+                              itemCount: tareas.length,
+                              itemBuilder: (context, index) {
+                                final tarea = tareas[index];
+                          
+                                //Este widget permite que el elemento se deslize
+                                return Dismissible(
+                                  key: Key(tarea.id.toString()),
+                                  direction: DismissDirection.endToStart,
+                                  onDismissed: (_) => globalDatabase.marcarCompletada(tarea.id),
+                                  background: containerVerdeDeFondo(),
+                                  
+                                  //Para que detecte cuando se mantiene presionado
+                                  child: GestureDetector(  
+                                    onLongPress: () => mostrarOpcionEliminar(tarea.id),
+                                    onTap: () => irADetalle(tarea),
+                                    
+                                    // La decoración de la tarea: /core/activityItems.dart
+                                    child: itemTarea(tarea: tarea),
+                                  ),
+                                );
+                              },
                             );
                           },
-                        );
-                      },
-                    ),
-
-            ),
-            //--Esta es de ejemplo (Eliminar cuando se acabe la decoración)--
-            Padding(
-              padding: const EdgeInsets.only(top: 30),
-              child: ElevatedButton(onPressed: insertar, child: Text("Insertar Ejemplo")),
-            ),
-            
-          ]
-          ,)
+                        ),
+                          
+                ),
+              ),
+            ]
+            ,),
 
       ),
 
-      
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 20.0),
+        child: SizedBox(
+          width: 60,
+          height: 60,
+          child: FloatingActionButton(
+            onPressed: insertar, 
+            backgroundColor: Colores.primary,
+            focusColor: Colores.secondary,
+            child: const Icon(Icons.add, color: Colores.iconBackground, size: 40)
+            ),
+        ),
+      ),
 
-      floatingActionButton: FloatingActionButton(onPressed: insertar, child: Icon(Icons.new_label)),
-       
+      //Menú inferior
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colores.surface,
+        selectedItemColor: Colores.primary, // El ícono activo en color cian
+        unselectedItemColor: Colores.iconNormal, // Los íconos inactivos en gris
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        iconSize: 30,
+        currentIndex: 0, // El 0 indica que se esta en la primera pestaña
+        onTap: (index) {
+          if (index == 0) return; // Ya se esta en Agenda, no se hace nada
+          if (index == 1) {
+            Navigator.pushReplacementNamed(context, '/agendaCalendario');
+          } else if (index == 2) {
+            Navigator.pushReplacementNamed(context, '/agendaHistorial');
+          }
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_today_outlined), //icono de agenda
+            label: 'Agenda',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_month_outlined), //icono de calendario
+            label: 'Calendario',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.receipt_long_outlined), // icono de historial
+            label: 'Historial',
+          ),
+        ],
+      ),
     );
   }
  
