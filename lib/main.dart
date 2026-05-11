@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:proyect_seki/database/database.dart';
 import 'package:proyect_seki/core/Colores.dart';
+import 'package:proyect_seki/pantallas/Home.dart';
 
 
 //Importación de pantallas
@@ -9,6 +10,7 @@ import 'package:proyect_seki/core/Colores.dart';
 import 'package:proyect_seki/pantallas/Login.dart';
 import 'package:proyect_seki/pantallas/pantallaEjemplo.dart';
 import 'package:proyect_seki/pantallas/usuario/AgendaHome.dart';
+import 'package:proyect_seki/pantallas/usuario/AgendaHomeCompleted.dart';
 import 'package:proyect_seki/pantallas/SignIn.dart';
 import 'package:proyect_seki/pantallas/usuario/AgendaCalendario.dart';
 import 'package:proyect_seki/pantallas/usuario/AgendaHistorial.dart';
@@ -41,10 +43,12 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => PantallaLogin(),
         '/agendaHome': (context) => AgendaHome(),
+        '/home': (context) => Home(),
         '/signin': (context) => PantallaRegistro(),
         '/ejemplo': (context) => PantallaEjemplo(),
         '/agendaCalendario': (context) => const AgendaCalendario(),
-        '/agendaHistorial': (context) => const AgendaHistorial()
+        '/agendaHistorial': (context) => const AgendaHistorial(),
+        '/agendaHomeCompleted': (context) => const AgendaHomeCompleted(),
       },
     );
   }

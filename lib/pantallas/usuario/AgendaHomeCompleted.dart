@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:proyect_seki/core/Colores.dart';
 import 'package:proyect_seki/core/Fecha.dart';
-import 'package:proyect_seki/core/activityItems.dart';
+import 'package:proyect_seki/core/activityItemsCompleted.dart';
 import 'package:proyect_seki/database/database.dart'; //Donde están las funciones de la base de datos
 import 'package:drift/drift.dart' as d;
 import 'package:proyect_seki/main.dart';
 
-class AgendaHome extends StatefulWidget {
-  const AgendaHome({super.key});
+class AgendaHomeCompleted extends StatefulWidget {
+  const AgendaHomeCompleted({super.key});
  
 
   @override
-  State<AgendaHome> createState() => _AgendaHomeState();
+  State<AgendaHomeCompleted> createState() => _AgendaHomeCompletedState();
 
 }
 
-class _AgendaHomeState extends State<AgendaHome> {
+class _AgendaHomeCompletedState extends State<AgendaHomeCompleted> {
 
 
   //-----------------Backend--------------------
@@ -66,10 +66,11 @@ class _AgendaHomeState extends State<AgendaHome> {
     );
   }
 
-  void navegarTerminados(){
-    Navigator.pushNamed(context, '/agendaHomeCompleted');
+  void navegarPendientes(){
+    Navigator.pushNamed(context, '/agendaHome');
   }
 
+  //-----------------Frontend--------------------
 
   void irADetalle(ActivityData tarea) {
     //Por ahora solo imprimimos para testear, luego se podrá navegar
@@ -115,9 +116,9 @@ class _AgendaHomeState extends State<AgendaHome> {
                   Padding(
                     padding: const EdgeInsets.all(10),
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: navegarPendientes,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colores.primaryTransparente, //Fondo color cian
+                        backgroundColor: Colores.surface, //Fondo color cian
                         foregroundColor: Colores.secondary, // Color del texto
                         elevation: 0, 
                         side: const BorderSide(color: Colores.secondary, width: 2),
@@ -135,9 +136,9 @@ class _AgendaHomeState extends State<AgendaHome> {
                   Padding(
                     padding: const EdgeInsets.all(10),
                     child: ElevatedButton(
-                      onPressed: navegarTerminados,
+                      onPressed: () {},
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colores.surface, // Fondo blanco no seleccionado
+                        backgroundColor: Colores.primaryTransparente, // Fondo blanco no seleccionado
                         foregroundColor: Colores.secondary, 
                         elevation: 0, 
                         side: const BorderSide(color: Colores.secondary, width: 2), 
@@ -173,7 +174,7 @@ class _AgendaHomeState extends State<AgendaHome> {
                   color: Colores.secondaryTransparente,
                   child: StreamBuilder<List<ActivityData>>(
                           //si es nulo le pasamos un id por defecto (0) para que no tire error, pero debería ser el id del usuario logueado
-                          stream: globalDatabase.verMisTareas(currentUser!.id),
+                          stream: globalDatabase.verMisTareasTerminadas(currentUser!.id),
                           //stream: globalDatabase.verMisTareas(currentUser?.id ?? 0), 
                           builder: (context, snapshot) {
                             if (!snapshot.hasData) return const CircularProgressIndicator();
@@ -198,7 +199,7 @@ class _AgendaHomeState extends State<AgendaHome> {
                                     onTap: () => irADetalle(tarea),
                                     
                                     // La decoración de la tarea: /core/activityItems.dart
-                                    child: itemTarea(tarea: tarea),
+                                    child: itemTareaCompleted(tarea: tarea),
                                   ),
                                 );
                               },
