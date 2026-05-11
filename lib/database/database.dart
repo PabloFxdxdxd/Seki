@@ -80,12 +80,18 @@ class AppDatabase extends _$AppDatabase {
 
   //Para Obtener datos en vivo
 
-  //Obtener las tareas según el id del usuario
+  //Obtener las tareas pendientes según el id del usuario
   Stream<List<ActivityData>> verMisTareas(int userId) {
-    return (select(activity)..where((t) => t.userId.equals(userId))).watch();
+    return (select(activity)..where((t) => t.userId.equals(userId) & t.isActive.equals(true))).watch();
+  }
+
+  //Obtener las tareas terminadas según el id del usuario
+  Stream<List<ActivityData>> verMisTareasTerminadas(int userId) {
+    return (select(activity)..where((t) => t.userId.equals(userId) & t.isActive.equals(false))).watch();
   }
 
   //Modificación
+  //Marcar como completada
   Future<void> marcarCompletada(int id) async {
     await (update(activity)..where((t) => t.id.equals(id))).write(ActivityCompanion(
       isActive: Value(false),
