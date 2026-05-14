@@ -98,6 +98,11 @@ class AppDatabase extends _$AppDatabase {
     ));
   }
 
+  //Actualizar todos los datos de una tarea/hábito desde el formulario
+  Future<bool> updateActivity(ActivityCompanion companion) {
+    return update(activity).replace(companion);
+  }
+
   //Eliminación
   Future<void> eliminarTarea(int id) async {
     await (delete(activity)..where((t) => t.id.equals(id))).go();
