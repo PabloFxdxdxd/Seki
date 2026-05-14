@@ -16,6 +16,7 @@ import 'package:proyect_seki/pantallas/SignIn.dart';
 import 'package:proyect_seki/pantallas/usuario/AgendaCalendario.dart';
 import 'package:proyect_seki/pantallas/usuario/AgendaHistorial.dart';
 import 'package:proyect_seki/pantallas/Home.dart';
+import 'package:proyect_seki/pantallas/usuario/FormActividad.dart';
 
 late AppDatabase globalDatabase;
 UserData? currentUser;
@@ -52,6 +53,7 @@ class MyApp extends StatelessWidget {
         '/agendaCalendario': (context) => const AgendaCalendario(),
         '/agendaHistorial': (context) => const AgendaHistorial(),
         '/agendaHomeCompleted': (context) => const AgendaHomeCompleted(),
+        '/formActividad': (context) => const FormActividad(),
       },
     );
   }

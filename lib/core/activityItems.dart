@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 import 'package:proyect_seki/database/database.dart';
 import 'package:proyect_seki/core/Colores.dart';
 import 'package:intl/intl.dart'; //para formatear fechas
+import 'package:proyect_seki/pantallas/usuario/FormActividad.dart'; //Formulario para crear/editar actividades
 
 //Esta es la estructura de las tarjetas que se generan en la pantalla AgendaHome
-Widget itemTarea({required ActivityData tarea}) {
+Widget itemTarea({required BuildContext context, required ActivityData tarea}) {
   
   //logica para el color pastel izquierdo 
   final List<Color> coloresPastel = [
@@ -46,76 +48,89 @@ Widget itemTarea({required ActivityData tarea}) {
       ? DateFormat('hh:mm a').format(tarea.reminderTime!) 
       : "Sin aviso";
 
+  // Identificadores visuales
+  bool esHabito = (tarea.type == 'Hábito' || tarea.type == 'Habit');
+  IconData iconoPrincipal = esHabito ? Icons.update : Icons.notifications_none;
+
   return Container(
     margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
     padding: const EdgeInsets.all(16),
     decoration: BoxDecoration(
       color: Colores.surface,
       borderRadius: BorderRadius.circular(15),
-      border: Border(left: BorderSide(color: colorBorde, width: 8)), // Borde decorativo izq
-      boxShadow: const [
-        BoxShadow(color: Colores.sombra, blurRadius: 10, offset: Offset(0, 4)),
-      ],
+      border: Border(left: BorderSide(color: colorBorde, width: 8)), 
+      boxShadow: const [BoxShadow(color: Colores.sombra, blurRadius: 10, offset: Offset(0, 4))],
     ),
     child: Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        //icono de tarea de la izquierda
-        const Icon(Icons.notifications_none, color: Colores.textSecondary),
+        // Ícono dinámico (Reloj para hábito, Campana para tarea)
+        Icon(iconoPrincipal, color: Colores.textSecondary, size: 28),
         const SizedBox(width: 12),
 
-        //Texto de la tarea
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(tarea.type ?? "Actividad", 
-                style: const TextStyle(fontWeight: FontWeight.bold, color: Colores.textSecondary, fontSize: 12)),
-              Text(tarea.title,
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: Colores.textPrimary)),
+              Text(tarea.type ?? "Actividad", style: const TextStyle(fontWeight: FontWeight.bold, color: Colores.textSecondary, fontSize: 12)),
+              Text(tarea.title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: Colores.textPrimary)),
               const SizedBox(height: 6),
-              if (tarea.priority != null) ...[
-                const SizedBox(height: 5),
-                Row(
-                  children: [
-                    const Icon(Icons.calendar_today, size: 12, color: Colores.textSecondary),
-                    const SizedBox(width: 4),
-                    Text(fechaVencimiento, style: const TextStyle(fontSize: 12, color: Colores.textSecondary)),
-                    const SizedBox(width: 10),
-                    const Icon(Icons.access_time, size: 12, color: Colores.textSecondary),
-                    const SizedBox(width: 4),
-                    Text(fechaRecordatorio, style: const TextStyle(fontSize: 12, color: Colores.textSecondary)),
-                  ],
-                ),
-              ],
+              
+              // Uso de WRAP para evitar desbordamiento amarillo
+              Wrap(
+                spacing: 10, // Espacio horizontal
+                runSpacing: 4, // Espacio vertical si hace salto de línea
+                children: [
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.calendar_today, size: 12, color: Colores.textSecondary),
+                      const SizedBox(width: 4),
+                      Text(fechaVencimiento, style: const TextStyle(fontSize: 11, color: Colores.textSecondary)),
+                    ],
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.access_time, size: 12, color: Colores.textSecondary),
+                      const SizedBox(width: 4),
+                      Text(fechaRecordatorio, style: const TextStyle(fontSize: 11, color: Colores.textSecondary)),
+                    ],
+                  ),
+                ],
+              ),
             ],
           ),
         ),
 
-        //Prioridad y Botón de Editar
+        // Lado derecho: Prioridad y Editar
         Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            // Cápsula de prioridad
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-              decoration: BoxDecoration(
-                color: colorPrioridad.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: colorPrioridad, width: 1),
+            // Solo muestra la cápsula de prioridad si NO es un hábito
+            if (!esHabito && tarea.priority != null) 
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                decoration: BoxDecoration(
+                  color: colorPrioridad.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: colorPrioridad, width: 1),
+                ),
+                child: Text(textoPrioridad, style: TextStyle(color: colorPrioridad, fontWeight: FontWeight.bold, fontSize: 10)),
               ),
-              child: Text(textoPrioridad,
-                style: TextStyle(color: colorPrioridad, fontWeight: FontWeight.bold, fontSize: 12)),
-            ),
-            const SizedBox(height: 8),
             
-            //Botón de Lápiz para Editar
+            SizedBox(height: esHabito ? 0 : 8),
+            
+            // Lápiz para Editar
             IconButton(
               constraints: const BoxConstraints(), 
               padding: EdgeInsets.zero,
-              icon: const Icon(Icons.edit_outlined, color: Colores.secondary, size: 26),
+              icon: const Icon(Icons.edit_outlined, color: Colores.secondary, size: 24),
               onPressed: () {
-                //Por ahora solo imprime en consola
-                print("Editando actividad: ${tarea.id}");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FormActividad(actividad: tarea)) 
+                );
               },
             ),
           ],

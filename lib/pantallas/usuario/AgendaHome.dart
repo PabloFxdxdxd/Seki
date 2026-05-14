@@ -5,6 +5,7 @@ import 'package:proyect_seki/core/activityItems.dart';
 import 'package:proyect_seki/database/database.dart'; //Donde están las funciones de la base de datos
 import 'package:drift/drift.dart' as d;
 import 'package:proyect_seki/main.dart';
+import 'package:proyect_seki/pantallas/usuario/FormActividad.dart'; //Formulario para crear/editar actividades
 
 class AgendaHome extends StatefulWidget {
   const AgendaHome({super.key});
@@ -196,9 +197,9 @@ class _AgendaHomeState extends State<AgendaHome> {
                                   child: GestureDetector(  
                                     onLongPress: () => mostrarOpcionEliminar(tarea.id),
                                     onTap: () => irADetalle(tarea),
-                                    
+                                     
                                     // La decoración de la tarea: /core/activityItems.dart
-                                    child: itemTarea(tarea: tarea),
+                                    child: itemTarea(context: context, tarea: tarea),
                                   ),
                                 );
                               },
@@ -213,13 +214,19 @@ class _AgendaHomeState extends State<AgendaHome> {
 
       ),
 
+    //Botón de agregar nueva actividad
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 20.0),
         child: SizedBox(
           width: 60,
           height: 60,
           child: FloatingActionButton(
-            onPressed: insertar, 
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => FormActividad()), //Navega al formulario de actividad sin datos para crear una nueva tarea
+              );
+            }, 
             backgroundColor: Colores.primary,
             focusColor: Colores.secondary,
             child: const Icon(Icons.add, color: Colores.iconBackground, size: 40)
