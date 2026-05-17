@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proyect_seki/core/Colores.dart';
+import 'package:proyect_seki/core/Notifications.dart';
 import 'package:proyect_seki/database/database.dart';
 import 'package:intl/intl.dart';
 import 'package:proyect_seki/main.dart'; // Para acceder a globalDatabase y currentUser
@@ -134,60 +135,100 @@ class _FormActividadState extends State<FormActividad> {
   }
 
   // Método para guardar la actividad (crear o actualizar según el caso)
-void _guardarActividad() {
-    //VALIDACIÓN
-    if (nombreController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Por favor, ingresa un nombre')),
+Future<void> _guardarActividad() async {
+
+  //Modo Crear
+  // VALIDACIÓN
+  if (nombreController.text.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Por favor, ingresa un nombre')),
+    );
+    return;
+  }
+
+  // PREPARAR FECHAS
+  DateTime? finalDueDate = _combinarFechaHora(
+    tipoActividad == 'Tarea' ? fechaEntrega : fechaFin, 
+    tipoActividad == 'Tarea' ? horaEntrega : null,
+  );
+  DateTime? finalReminder = _combinarFechaHora(fechaRecordatorio, horaRecordatorio);
+
+  // CREAR LA VARIABLE COMPANION
+  final companion = ActivityCompanion(
+    type: d.Value(tipoActividad), 
+    userId: d.Value(currentUser?.id ?? 0),
+    title: d.Value(nombreController.text),
+    details: d.Value(detallesController.text.isEmpty ? null : detallesController.text),
+    priority: d.Value(prioridad.toLowerCase()), 
+    startDate: d.Value(DateTime.now()), 
+    dueDate: finalDueDate != null ? d.Value(finalDueDate) : const d.Value.absent(),
+    frequency: tipoActividad == 'Hábito' ? d.Value(frecuencia) : const d.Value.absent(), 
+    reminderTime: finalReminder != null ? d.Value(finalReminder) : const d.Value.absent(),
+    isActive: const d.Value(true),
+    createdAt: d.Value(DateTime.now()),
+  );
+
+  //se inicializa el servicio de notificaciones
+  final notiService = NotificationService();
+
+  //se guarda en base y se programa la notificación
+  if (widget.actividad == null) {
+    
+    final int nuevoId = await globalDatabase.insertActivity(companion);
+
+    // Si el usuario activó el switch de recordatorio y la fecha es válida
+    if (tieneRecordatorio && finalReminder != null) {
+      await notiService.programarNotificacion(
+        id: nuevoId, // Usamos el ID recién creado de la BD
+        titulo: nombreController.text,
+        cuerpo: tipoActividad == 'Tarea' 
+            ? 'Tienes una tarea pendiente de entrega.' 
+            : 'Es momento de cumplir con tu hábito diario.',
+        fechaProgramada: finalReminder,
       );
-      return;
     }
 
-    //PREPARAR FECHAS
-    // Combinamos las fechas y horas seleccionadas
-    DateTime? finalDueDate = _combinarFechaHora(
-      tipoActividad == 'Tarea' ? fechaEntrega : fechaFin, 
-      tipoActividad == 'Tarea' ? horaEntrega : null,
-    );
-    DateTime? finalReminder = _combinarFechaHora(fechaRecordatorio, horaRecordatorio);
-
-    //CREAR LA VARIABLE COMPANION
-    // Construimos el objeto para Drift usando los valores en español directamente
-    final companion = ActivityCompanion(
-      type: d.Value(tipoActividad), // Guarda "Tarea" o "Hábito"
-      userId: d.Value(currentUser?.id ?? 0),
-      title: d.Value(nombreController.text),
-      details: d.Value(detallesController.text.isEmpty ? null : detallesController.text),
-      priority: d.Value(prioridad.toLowerCase()), // Guarda "alta", "media" o "baja"
-      startDate: d.Value(DateTime.now()), 
-      dueDate: finalDueDate != null ? d.Value(finalDueDate) : const d.Value.absent(),
-      frequency: tipoActividad == 'Hábito' ? d.Value(frecuencia) : const d.Value.absent(), 
-      reminderTime: finalReminder != null ? d.Value(finalReminder) : const d.Value.absent(),
-      isActive: const d.Value(true),
-      createdAt: d.Value(DateTime.now()),
-    );
-
-    //GUARDAR EN BASE DE DATOS
-    // Ahora sí ejecutamos la inserción o actualización, porque 'companion' ya existe
-    if (widget.actividad == null) {
-      // MODO CREAR
-      globalDatabase.insertActivity(companion);
+    if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Actividad creada exitosamente')),
       );
-    } else {
-      // MODO EDITAR
-      globalDatabase.updateActivity(
-        companion.copyWith(id: d.Value(widget.actividad!.id))
+    }
+  } else {
+  
+    //MODO EDITAR
+    
+    final int idExistente = widget.actividad!.id;
+
+    // Actualizamos el registro en la BD
+    await globalDatabase.updateActivity(
+      companion.copyWith(id: d.Value(idExistente))
+    );
+
+    //Cancelamos cualquier notificación previa agendada con este ID para evitar que suenen alarmas viejas si el usuario cambió la hora.
+    await notiService.cancelarNotificacion(idExistente);
+
+    // Si el recordatorio sigue activo, lo volvemos a programar con los nuevos datos
+    if (tieneRecordatorio && finalReminder != null) {
+      await notiService.programarNotificacion(
+        id: idExistente,
+        titulo: nombreController.text,
+        cuerpo: tipoActividad == 'Tarea' 
+            ? 'Tienes una tarea pendiente de entrega.' 
+            : 'Es momento de cumplir con tu hábito diario.',
+        fechaProgramada: finalReminder,
       );
+    }
+
+    if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Actividad actualizada exitosamente')),
       );
     }
-
-    // 5. REGRESAR A LA PANTALLA PRINCIPAL
-    Navigator.pop(context);
   }
+
+  //se regresa a la pantalla principal
+  if (mounted) Navigator.pop(context);
+}
 
   //DISEÑO DE LA INTERFAZ
   @override

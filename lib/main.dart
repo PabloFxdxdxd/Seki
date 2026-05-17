@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
+import 'package:proyect_seki/core/Notifications.dart';
 import 'package:proyect_seki/database/database.dart';
 import 'package:proyect_seki/core/Colores.dart';
 import 'package:proyect_seki/pantallas/Home.dart';
+
 
 
 
@@ -15,16 +16,16 @@ import 'package:proyect_seki/pantallas/usuario/AgendaHomeCompleted.dart';
 import 'package:proyect_seki/pantallas/SignIn.dart';
 import 'package:proyect_seki/pantallas/usuario/AgendaCalendario.dart';
 import 'package:proyect_seki/pantallas/usuario/AgendaHistorial.dart';
-import 'package:proyect_seki/pantallas/Home.dart';
 import 'package:proyect_seki/pantallas/usuario/FormActividad.dart';
 
 late AppDatabase globalDatabase;
 UserData? currentUser;
 
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   globalDatabase = AppDatabase();
+  await NotificationService().init();
   runApp(const MyApp());
 }
 
@@ -49,7 +50,6 @@ class MyApp extends StatelessWidget {
         '/home': (context) => Home(),
         '/signin': (context) => PantallaRegistro(),
         '/ejemplo': (context) => PantallaEjemplo(),
-        '/home' : (context) => const Home(),
         '/agendaCalendario': (context) => const AgendaCalendario(),
         '/agendaHistorial': (context) => const AgendaHistorial(),
         '/agendaHomeCompleted': (context) => const AgendaHomeCompleted(),
