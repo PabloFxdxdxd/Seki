@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:path/path.dart';
+import 'package:proyect_seki/core/Colores.dart';
 import 'package:proyect_seki/database/database.dart';
 
 
 //Importación de pantallas
 
 import 'package:proyect_seki/pantallas/Login.dart';
+import 'package:proyect_seki/pantallas/admins/dashboard.dart';
 import 'package:proyect_seki/pantallas/pantallaEjemplo.dart';
 import 'package:proyect_seki/pantallas/usuario/AgendaHome.dart';
 import 'package:proyect_seki/pantallas/SignIn.dart';
@@ -32,6 +35,7 @@ class MyApp extends StatelessWidget {
         
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF8DEAE6)),
         
+        
       ),
       // 3. Definimos la navegación por nombres
       initialRoute: '/', // La ruta que carga al abrir la app
@@ -39,7 +43,8 @@ class MyApp extends StatelessWidget {
         '/': (context) => PantallaLogin(),
         '/agendaHome': (context) => AgendaHome(),
         '/signin': (context) => PantallaRegistro(),
-        '/ejemplo': (context) => PantallaEjemplo()
+        '/ejemplo': (context) => PantallaEjemplo(),
+        '/admin': (context) => PantallaDashboard(),
       },
     );
   }

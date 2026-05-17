@@ -1,4 +1,6 @@
+import 'package:drift/drift.dart' as d;
 import 'package:flutter/material.dart';
+import 'package:proyect_seki/database/database.dart';
 import 'package:proyect_seki/main.dart'; // Cambia 'proyect_seki' por el nombre real de tu proyecto
 
 class PantallaLogin extends StatefulWidget { 
@@ -47,11 +49,16 @@ class _PantallaLoginState extends State<PantallaLogin> {
     print("Registrarse");
     Navigator.pushNamed(context, '/signin');
   }
+  //Entra a admin temporalmente
+  void navegarAdmin(){
+    Navigator.pushNamed(context, '/admin');
+  }
 
   void funcGoogle(){
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text("Inicio de sesión no disponible")),
     );
+
   }
 
   @override
@@ -166,7 +173,7 @@ class _PantallaLoginState extends State<PantallaLogin> {
           
               Center(
                 child: ElevatedButton.icon(
-                  onPressed: funcGoogle,
+                  onPressed: () {navegarAdmin();},
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white, 
                     minimumSize: Size(double.infinity, 50),
