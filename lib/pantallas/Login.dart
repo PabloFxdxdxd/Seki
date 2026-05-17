@@ -3,6 +3,7 @@ import 'package:proyect_seki/main.dart'; // Cambia 'proyect_seki' por el nombre 
 
 import 'package:proyect_seki/core/Colores.dart'; 
 import 'package:proyect_seki/pantallas/Home.dart';
+import 'package:proyect_seki/core/Notifications.dart';
 
 class PantallaLogin extends StatefulWidget { 
 
@@ -176,7 +177,7 @@ class _PantallaLoginState extends State<PantallaLogin> {
           
               Center(
                 child: ElevatedButton.icon(
-                  onPressed: funcGoogle,
+                  onPressed: () async { await NotificationService.lanzarNotificacionTestProgramada(1);},
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colores.googleButton, 
                     minimumSize: const Size(double.infinity, 50),
