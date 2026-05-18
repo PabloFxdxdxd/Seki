@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:proyect_seki/core/Colores.dart';
+import 'package:proyect_seki/core/Fecha.dart';
+
 import 'package:proyect_seki/core/adminTheme.dart';
 import 'package:proyect_seki/database/database.dart'; //Donde están las funciones de la base de datos
 import 'package:drift/drift.dart' as d;
@@ -61,6 +62,27 @@ class _PantallaDashboardState extends State<PantallaDashboard> {
     return Theme(
       data: AdminTheme.theme,
       child: Scaffold(
+        //barra inferior
+        bottomNavigationBar: BottomNavigationBar(
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.dashboard),
+              label: "Dashboard",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_add),
+              label: "Registro de Administradores",
+            ),
+          ],
+          currentIndex: 0,
+          onTap: (index) {
+            //navegación entre secciones del admin
+            if (index == 1) {
+              Navigator.pushReplacementNamed(context, '/adminReg');
+            }
+          },
+        ),
+        //barra superior
         appBar: AppBar(
           title: const Text("Panel de Adminsitración"),
           actions: [
@@ -83,6 +105,16 @@ class _PantallaDashboardState extends State<PantallaDashboard> {
               child: Column(
                 //4 bloques / body
                 children: [
+                  SizedBox(height: 20),
+                  //Tíulo
+                  Text(
+                    "Dashboard",
+                    style: AdminTheme.theme.textTheme.titleLarge,
+                  ),
+                  Text(
+                    Fecha.obtenerFecha(),
+                    style: AdminTheme.theme.textTheme.titleMedium,
+                  ),
                   GridView.count(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -91,7 +123,7 @@ class _PantallaDashboardState extends State<PantallaDashboard> {
                     crossAxisSpacing: 5.0,
                     mainAxisSpacing: 5.0,
                     children: [
-                      //Numero de usuarios y porcentaje de nuevos
+                      //Numero de usuarios
                       Card(
                         margin: const EdgeInsets.symmetric(
                           horizontal: 8.0,
@@ -99,14 +131,54 @@ class _PantallaDashboardState extends State<PantallaDashboard> {
                         ),
                         child: FutureBuilder<int>(
                           future: _totalUsuarios,
-                          builder: (context, snap) => ListTile(
-                            title: Text("Usuarios"),
-                            subtitle: Text(
-                              snap.hasData
-                                  ? '${snap.data}'
-                                  : snap.hasError
-                                  ? 'Error'
-                                  : '...',
+                          builder: (context, snap) => Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  //Alineado a la izq
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Text(
+                                        "Total de usuarios",
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                      SizedBox(height: 5),
+                                      Text(
+                                        style: const TextStyle(
+                                          fontSize: 28,
+                                          fontWeight: FontWeight.bold,
+                                          color: AdminColors.textPrimary,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                        snap.hasData
+                                            ? '${snap.data}'
+                                            : snap.hasError
+                                            ? 'Error'
+                                            : '...',
+                                      ),
+                                      SizedBox(height: 5),
+                                      Text(
+                                        "registrados en la app",
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: AdminColors.textSecondary,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+
+                                //Derecha / icono
+                                Icon(
+                                  Icons.people_outline,
+                                  size: 65,
+                                  color: AdminColors.secondary,
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -121,16 +193,55 @@ class _PantallaDashboardState extends State<PantallaDashboard> {
 
                         child: FutureBuilder<int>(
                           future: _habitosActivos,
-                          builder: (context, snap) => ListTile(
-                            //leading: Icon(Icons.person, size: 50, color: Colors.blue)
-                            title: Text("Hábitos activos"),
-                            subtitle: Text(
-                              snap.hasData
-                                  ? '${snap.data}'
-                                  : snap.hasError
-                                  ? 'Error'
-                                  : '...',
-                            ), //num de habitos activos totales
+                          builder: (context, snap) => Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  //Alineado a la izq
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Text(
+                                        "Hábitos activos",
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                      SizedBox(height: 5),
+                                      Text(
+                                        style: const TextStyle(
+                                          fontSize: 28,
+                                          fontWeight: FontWeight.bold,
+                                          color: AdminColors.textPrimary,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                        snap.hasData
+                                            ? '${snap.data}'
+                                            : snap.hasError
+                                            ? 'Error'
+                                            : '...',
+                                      ),
+                                      SizedBox(height: 5),
+                                      Text(
+                                        "en total",
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: AdminColors.textSecondary,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+
+                                //Derecha / icono
+                                Icon(
+                                  Icons.check_box_outlined,
+                                  size: 65,
+                                  color: AdminColors.secondary,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -141,18 +252,57 @@ class _PantallaDashboardState extends State<PantallaDashboard> {
                           horizontal: 8.0,
                           vertical: 8.0,
                         ),
-
                         child: FutureBuilder<double>(
                           future: _cumplimiento,
-                          builder: (context, snap) => ListTile(
-                            title: const Text("Cumplimiento global"),
-                            subtitle: Text(
-                              snap.hasData
-                                  ? '${snap.data!.toStringAsFixed(1)}%'
-                                  : snap.hasError
-                                  ? 'Error'
-                                  : '...',
-                            ), //porcentaje de cumplimiento global
+                          builder: (context, snap) => Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  //Alineado a la izq
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Text(
+                                        "Cumplimiento global",
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                      SizedBox(height: 5),
+                                      Text(
+                                        style: const TextStyle(
+                                          fontSize: 28,
+                                          fontWeight: FontWeight.bold,
+                                          color: AdminColors.textPrimary,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                        snap.hasData
+                                            ? '${snap.data!.toStringAsFixed(1)}%'
+                                            : snap.hasError
+                                            ? 'Error'
+                                            : '...',
+                                      ),
+                                      SizedBox(height: 5),
+                                      Text(
+                                        "de hábitos cumplidos",
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: AdminColors.textSecondary,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+
+                                //Derecha / icono
+                                Icon(
+                                  Icons.trending_up,
+                                  size: 65,
+                                  color: AdminColors.secondary,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -161,21 +311,62 @@ class _PantallaDashboardState extends State<PantallaDashboard> {
                       Card(
                         child: FutureBuilder<int>(
                           future: _registrosHoy,
-                          builder: (context, snap) => ListTile(
-                            title: const Text("Actividades de hoy"),
-                            subtitle: Text(
-                              snap.hasData
-                                  ? '${snap.data}'
-                                  : snap.hasError
-                                  ? 'Error'
-                                  : '...',
-                            ), //num de registros de hoy
+                          builder: (context, snap) => Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  //Alineado a la izq
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Text(
+                                        "Registros de hoy",
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                      SizedBox(height: 5),
+                                      Text(
+                                        style: const TextStyle(
+                                          fontSize: 28,
+                                          fontWeight: FontWeight.bold,
+                                          color: AdminColors.textPrimary,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                        snap.hasData
+                                            ? '${snap.data}'
+                                            : snap.hasError
+                                            ? 'Error'
+                                            : '...',
+                                      ),
+                                      SizedBox(height: 5),
+                                      Text(
+                                        "hábitos registrados hoy",
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: AdminColors.textSecondary,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+
+                                //Derecha / icono
+                                Icon(
+                                  Icons.today_outlined,
+                                  size: 65,
+                                  color: AdminColors.secondary,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ],
                   ),
-                  //Barras / bar_chart
+
+                  //Barras / crecimiento mensual
                   FutureBuilder<List<MonthlyGrowth>>(
                     future: _usuariosPorMes,
                     builder: (context, snap) {
@@ -183,7 +374,6 @@ class _PantallaDashboardState extends State<PantallaDashboard> {
                         child: Column(
                           children: [
                             const ListTile(
-                              //leading: Icon(Icons.person, size: 50, color: Colors.blue)
                               title: Text("Crecimiento mensual"),
                               subtitle: Text(
                                 "Últimos 6 meses",
