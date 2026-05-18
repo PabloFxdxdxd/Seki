@@ -86,16 +86,49 @@ class AppDatabase extends _$AppDatabase {
 
   //Para Obtener datos en vivo
 
-  //Obtener las tareas según el id del usuario
+  //Obtener las tareas pendientes según el id del usuario
   Stream<List<ActivityData>> verMisTareas(int userId) {
-    return (select(activity)..where((t) => t.userId.equals(userId))).watch();
+  
+  final ahora = DateTime.now();
+  final inicioHoy = DateTime(ahora.year, ahora.month, ahora.day);
+  final finHoy = DateTime(ahora.year, ahora.month, ahora.day, 23, 59, 59);
+
+  return (select(activity)
+    ..where((t) {
+      //mismo usuario y que no esté borrada
+      final filtroBase = t.userId.equals(userId) & t.isActive.equals(true);
+
+      //la fecha de entrega debe ser hoy
+      final esTareaDeHoy = t.type.equals('Tarea') & 
+                           t.dueDate.isBetweenValues(inicioHoy, finHoy);
+
+    
+      final esHabitoActivo = t.type.equals('Hábito');
+
+      //Retornamos si cumple los básicos Y (es tarea de hoy O es hábito)
+      return filtroBase & (esTareaDeHoy | esHabitoActivo);
+    })
+    //Ordenamos para que las de mayor prioridad o más próximas salgan primero
+    ..orderBy([(t) => OrderingTerm.asc(t.dueDate)])
+  ).watch();
+}
+
+  //Obtener las tareas terminadas según el id del usuario
+  Stream<List<ActivityData>> verMisTareasTerminadas(int userId) {
+    return (select(activity)..where((t) => t.userId.equals(userId) & t.isActive.equals(false))).watch();
   }
 
   //Modificación
+  //Marcar como completada
   Future<void> marcarCompletada(int id) async {
     await (update(activity)..where((t) => t.id.equals(id))).write(
       ActivityCompanion(isActive: Value(false)),
     );
+  }
+
+  //Actualizar todos los datos de una tarea/hábito desde el formulario
+  Future<bool> updateActivity(ActivityCompanion companion) {
+    return update(activity).replace(companion);
   }
 
   //Eliminación

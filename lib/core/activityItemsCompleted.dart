@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 import 'package:proyect_seki/database/database.dart';
 import 'package:proyect_seki/core/Colores.dart';
 import 'package:intl/intl.dart'; //para formatear fechas
-import 'package:proyect_seki/pantallas/usuario/FormActividad.dart'; //Formulario para crear/editar actividades
 
 //Esta es la estructura de las tarjetas que se generan en la pantalla AgendaHome
-Widget itemTarea({required BuildContext context, required ActivityData tarea}) {
+Widget itemTareaCompleted({required ActivityData tarea, required BuildContext context}) {
   
   //logica para el color pastel izquierdo 
   final List<Color> coloresPastel = [
@@ -48,23 +46,20 @@ Widget itemTarea({required BuildContext context, required ActivityData tarea}) {
       ? DateFormat('hh:mm a').format(tarea.reminderTime!) 
       : "Sin aviso";
 
-  // Identificadores visuales
   bool esHabito = (tarea.type == 'Hábito' || tarea.type == 'Habit');
   IconData iconoPrincipal = esHabito ? Icons.update : Icons.notifications_none;
 
-  return Container(
+return Container(
     margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
     padding: const EdgeInsets.all(16),
     decoration: BoxDecoration(
       color: Colores.surface,
       borderRadius: BorderRadius.circular(15),
-      border: Border(left: BorderSide(color: colorBorde, width: 8)), 
+      border: Border(left: BorderSide(color: colorBorde, width: 8)),
       boxShadow: const [BoxShadow(color: Colores.sombra, blurRadius: 10, offset: Offset(0, 4))],
     ),
     child: Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        // Ícono dinámico (Reloj para hábito, Campana para tarea)
         Icon(iconoPrincipal, color: Colores.textSecondary, size: 28),
         const SizedBox(width: 12),
 
@@ -73,13 +68,12 @@ Widget itemTarea({required BuildContext context, required ActivityData tarea}) {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(tarea.type ?? "Actividad", style: const TextStyle(fontWeight: FontWeight.bold, color: Colores.textSecondary, fontSize: 12)),
-              Text(tarea.title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: Colores.textPrimary)),
+              Text(tarea.title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: Colores.textPrimary, decoration: TextDecoration.lineThrough)),
               const SizedBox(height: 6),
               
-              // Uso de WRAP para evitar desbordamiento amarillo
               Wrap(
-                spacing: 10, // Espacio horizontal
-                runSpacing: 4, // Espacio vertical si hace salto de línea
+                spacing: 10,
+                runSpacing: 4,
                 children: [
                   Row(
                     mainAxisSize: MainAxisSize.min,
@@ -103,11 +97,9 @@ Widget itemTarea({required BuildContext context, required ActivityData tarea}) {
           ),
         ),
 
-        // Lado derecho: Prioridad y Editar
         Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            // Solo muestra la cápsula de prioridad si NO es un hábito
             if (!esHabito && tarea.priority != null) 
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
@@ -118,21 +110,7 @@ Widget itemTarea({required BuildContext context, required ActivityData tarea}) {
                 ),
                 child: Text(textoPrioridad, style: TextStyle(color: colorPrioridad, fontWeight: FontWeight.bold, fontSize: 10)),
               ),
-            
-            SizedBox(height: esHabito ? 0 : 8),
-            
-            // Lápiz para Editar
-            IconButton(
-              constraints: const BoxConstraints(), 
-              padding: EdgeInsets.zero,
-              icon: const Icon(Icons.edit_outlined, color: Colores.secondary, size: 24),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => FormActividad(actividad: tarea)) 
-                );
-              },
-            ),
+            // Se elimina el botón de editar para tareas completadas
           ],
         ),
       ],

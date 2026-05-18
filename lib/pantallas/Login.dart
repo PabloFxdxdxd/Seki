@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:proyect_seki/database/database.dart';
 import 'package:proyect_seki/main.dart'; // Cambia 'proyect_seki' por el nombre real de tu proyecto
 
+import 'package:proyect_seki/core/Colores.dart'; 
+import 'package:proyect_seki/pantallas/Home.dart';
+import 'package:proyect_seki/core/Notifications.dart';
+
 class PantallaLogin extends StatefulWidget { 
 
   @override
@@ -34,7 +38,12 @@ class _PantallaLoginState extends State<PantallaLogin> {
       if(usuario.type.contains("admin")){
         Navigator.pushNamed(context, '/admin');
       }else{
-        Navigator.pushNamed(context, '/agendaHome');
+        try{
+          Navigator.pushNamed(context, '/home');
+        }catch(e){
+          print("Algo pasó con la navegación");
+        }
+        
       }
     }else {
     if (!mounted) return;
@@ -93,7 +102,7 @@ class _PantallaLoginState extends State<PantallaLogin> {
               Text("Iniciar sesión", style: TextStyle(
                 fontSize: 32, 
                 fontWeight: FontWeight.bold, 
-                color: Colors.white)),
+                color: Colores.background)),
               const SizedBox(height: 40), //separa los elementos con un espacio
               
               //Campo de Correo
@@ -101,7 +110,7 @@ class _PantallaLoginState extends State<PantallaLogin> {
                   "Correo electrónico", 
                   style: TextStyle(
                     
-                    color: Colors.white,
+                    color: Colores.background,
                     fontSize: 15
                   )
               ),
@@ -111,7 +120,7 @@ class _PantallaLoginState extends State<PantallaLogin> {
                   decoration: InputDecoration(
                   hintText: "name@example.com",
                   filled: true,
-                  fillColor: Colors.white,
+                  fillColor: Colores.background,
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
           
                 ),
@@ -125,7 +134,7 @@ class _PantallaLoginState extends State<PantallaLogin> {
                   "Contraseña", 
                   style: TextStyle(
           
-                    color: Colors.white,
+                    color: Colores.background,
                     fontSize: 15
                   )
               ),
@@ -136,7 +145,7 @@ class _PantallaLoginState extends State<PantallaLogin> {
                   decoration: InputDecoration(
                   hintText: "Introduce tu contraseña",
                   filled: true,
-                  fillColor: Colors.white,
+                  fillColor: Colores.background,
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
           
                 ),
@@ -161,7 +170,7 @@ class _PantallaLoginState extends State<PantallaLogin> {
                 child: Text(
                   "O",
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Colores.background,
                     fontSize: 15
                   )
                  ),
@@ -175,15 +184,15 @@ class _PantallaLoginState extends State<PantallaLogin> {
                 child: ElevatedButton.icon(
                   onPressed: () {navegarAdmin();},
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white, 
-                    minimumSize: Size(double.infinity, 50),
-                    
+                    backgroundColor: Colores.googleButton, 
+                    minimumSize: const Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                   ),
                   icon: Image.asset('assets/icons/google.png', height: 24),
-                  label: Text(
-                    "Continuar con Google",
+                  label: const Text(
+                    "Continuar con Google (Temp)",
                     style: TextStyle(
-                      color: Colors.black,
+                      color: Colores.background, 
                       fontSize: 15
                   )
                 )
@@ -197,7 +206,7 @@ class _PantallaLoginState extends State<PantallaLogin> {
               Text(
                 "¿No tienes Cuenta?",
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Colores.background,
                   fontSize: 15
                 )
                 ),
