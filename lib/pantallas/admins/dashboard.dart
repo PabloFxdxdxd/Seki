@@ -4,6 +4,7 @@ import 'package:proyect_seki/core/Fecha.dart';
 import 'package:proyect_seki/core/adminTheme.dart';
 import 'package:proyect_seki/database/database.dart'; //Donde están las funciones de la base de datos
 import 'package:drift/drift.dart' as d;
+import 'package:proyect_seki/main.dart';
 import 'package:proyect_seki/pantallas/admins/barchart.dart';
 
 class PantallaDashboard extends StatefulWidget {
@@ -24,7 +25,6 @@ class _PantallaDashboardState extends State<PantallaDashboard> {
     print("Usuario Eliminado");
   }
 
-  final _db = AppDatabase();
 
   late Future<int> _totalUsuarios;
   late Future<int> _habitosActivos;
@@ -40,19 +40,12 @@ class _PantallaDashboardState extends State<PantallaDashboard> {
   }
 
   void _cargarDatos() {
-    _totalUsuarios = _db.totalUsuarios();
-    _habitosActivos = _db.habitosActivos();
-    _cumplimiento = _db.cumplimientoGlobal();
-    _registrosHoy = _db.registrosHoy();
-    _usuariosPorMes = _db.usuariosPorMes();
-    _topUsuarios = _db.getTopUsers();
-  }
-
-  @override
-  //cierra la base de datos al salir de la pantalla para liberar recursos
-  void dispose() {
-    _db.close();
-    super.dispose();
+    _totalUsuarios = globalDatabase.totalUsuarios();
+    _habitosActivos = globalDatabase.habitosActivos();
+    _cumplimiento = globalDatabase.cumplimientoGlobal();
+    _registrosHoy = globalDatabase.registrosHoy();
+    _usuariosPorMes = globalDatabase.usuariosPorMes();
+    _topUsuarios = globalDatabase.getTopUsers();
   }
 
   //-----------------Frontend--------------------
