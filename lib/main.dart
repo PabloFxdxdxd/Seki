@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:proyect_seki/core/Colores.dart';
 import 'package:proyect_seki/core/Notifications.dart';
 import 'package:proyect_seki/database/database.dart';
-import 'package:proyect_seki/core/Colores.dart';
 import 'package:proyect_seki/pantallas/Home.dart';
-
 
 
 
 //Importación de pantallas
 
 import 'package:proyect_seki/pantallas/Login.dart';
+import 'package:proyect_seki/pantallas/admins/adminReg.dart';
+import 'package:proyect_seki/pantallas/admins/dashboard.dart';
 import 'package:proyect_seki/pantallas/pantallaEjemplo.dart';
 import 'package:proyect_seki/pantallas/usuario/AgendaHome.dart';
 import 'package:proyect_seki/pantallas/usuario/AgendaHomeCompleted.dart';
@@ -38,8 +39,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'SEKI',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colores.primary),
-        
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF8DEAE6)),
       ),
       
       // 3. Definimos la navegación por nombres
@@ -50,6 +50,8 @@ class MyApp extends StatelessWidget {
         '/home': (context) => Home(),
         '/signin': (context) => PantallaRegistro(),
         '/ejemplo': (context) => PantallaEjemplo(),
+        '/admin': (context) => PantallaDashboard(),
+        '/adminReg': (context) => PantallaAdminRegistro(),
         '/agendaCalendario': (context) => const AgendaCalendario(),
         '/agendaHistorial': (context) => const AgendaHistorial(),
         '/agendaHomeCompleted': (context) => const AgendaHomeCompleted(),
@@ -58,6 +60,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
-
