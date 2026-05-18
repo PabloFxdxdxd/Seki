@@ -186,27 +186,41 @@ class _AgendaHomeState extends State<AgendaHome> {
                               itemBuilder: (context, index) {
                                 final tarea = tareas[index];
                           
-                                //Este widget permite que el elemento se deslize
-                                return Dismissible(
-                                  key: Key(tarea.id.toString()),
-                                  direction: DismissDirection.endToStart,
-                                  onDismissed: (_) => globalDatabase.marcarCompletada(tarea.id),
-                                  background: containerVerdeDeFondo(),
-                                  
-                                  //Para que detecte cuando se mantiene presionado
-                                  child: GestureDetector(  
-                                    onLongPress: () => mostrarOpcionEliminar(tarea.id),
-                                    onTap: () => irADetalle(tarea),
-                                     
-                                    // La decoración de la tarea: /core/activityItems.dart
-                                    child: itemTarea(context: context, tarea: tarea),
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                        ),
-                          
+                            //Este widget permite que el elemento se deslize
+                              return Dismissible(
+                                key: Key(tarea.id.toString()),
+                                direction: DismissDirection.horizontal, 
+                                      
+                                // Fondo al deslizar de Izquierda a Derecha (Rojo)
+                                background: containerRojoDeFondo(),
+                                      
+                                // Fondo al deslizar de Derecha a Izquierda (Verde)
+                                secondaryBackground: containerVerdeDeFondo(),
+                                      
+                                onDismissed: (direction) {
+                                  //Comprobar hacia dónde deslizó el usuario
+                                  if (direction == DismissDirection.endToStart) {
+                                    // Deslizó hacia la Izquierda
+                                    globalDatabase.marcarCompletada(tarea.id);
+                                  } else if (direction == DismissDirection.startToEnd) {
+                                    // Deslizó hacia la Derecha
+                                    globalDatabase.marcarFallida(tarea.id);
+                                  }
+                                },
+                                      
+                                //Para que detecte cuando se mantiene presionado
+                                child: GestureDetector(  
+                                  onLongPress: () => mostrarOpcionEliminar(tarea.id),
+                                  onTap: () => irADetalle(tarea),
+
+                                  // La decoración de la tarea: /core/activityItems.dart
+                                  child: itemTarea(context: context, tarea: tarea),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),   
                 ),
               ),
             ]

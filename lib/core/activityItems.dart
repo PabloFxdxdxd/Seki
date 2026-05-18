@@ -156,3 +156,20 @@ Widget containerVerdeDeFondo() {
     ),
   );
 }
+
+// Este es un contenedor rojo que se muestra cuando se desliza a la derecha (No completado)
+Widget containerRojoDeFondo() {
+  return Container(
+    color: Colores.error, // Color rojo de tu paleta
+    alignment: Alignment.centerLeft, // Alineado a la izquierda porque deslizarás desde ahí
+    padding: const EdgeInsets.symmetric(horizontal: 20),
+    child: const Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Icon(Icons.close, color: Colores.background),
+        SizedBox(width: 10),
+        Text("No completado", style: TextStyle(color: Colores.background, fontWeight: FontWeight.bold)),
+      ],
+    ),
+  );
+}
