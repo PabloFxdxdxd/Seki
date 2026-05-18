@@ -2,11 +2,14 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class Colores {
+  //Colores de ejemplo, utilicen los colores de la paleta que prefieran, pero tengan unos definidos
 
-  //PALETA PRINCIPAL
-  static const Color primary = Color(0xFF8DEAE6);      // Color principal de la app
-  static const Color primaryTransparente = Color(0x808DEAE6);
-  static const Color secondary = Color(0xFF34716E);    // Detalles oscuros, barras, etc.
+  //Principales
+  static Color primary = Color(0xFF8deae6);
+  static Color primaryBackgroundOnSelect = Color(0xFF27A49E);
+  static Color secondary = Color(0xFF34716E);
+  static Color backgroundClear = Color.fromARGB(255, 255, 255, 255);
+  static const Color primaryTransparente = Color(0x808DEAE6); // Detalles oscuros, barras, etc.
   static const Color secondaryTransparente = Color.fromARGB(128, 85, 162, 158);    // Detalles oscuros, barras, etc.
 
   static const Color accent = Color(0xFFFF8A65);       // Acentos llamativos
@@ -35,4 +38,7 @@ class Colores {
   //BOTONES Y COMPONENTES ESPECÍFICOS
   static const Color googleButton = Color.fromARGB(255, 222, 127, 119); // Botón de Google
   static const Color sombra = Color(0x0D000000);       // Sombras de tarjetas o botones
-  }
+}
+
+
+  

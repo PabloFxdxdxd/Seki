@@ -1,4 +1,6 @@
+import 'package:drift/drift.dart' as d;
 import 'package:flutter/material.dart';
+import 'package:proyect_seki/database/database.dart';
 import 'package:proyect_seki/main.dart'; // Cambia 'proyect_seki' por el nombre real de tu proyecto
 
 import 'package:proyect_seki/core/Colores.dart'; 
@@ -56,13 +58,16 @@ class _PantallaLoginState extends State<PantallaLogin> {
     print("Registrarse");
     Navigator.pushNamed(context, '/signin');
   }
+  //Entra a admin temporalmente
+  void navegarAdmin(){
+    Navigator.pushNamed(context, '/admin');
+  }
 
   void funcGoogle(){
-      //Navegación temporal hacia Home
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const Home()),
-      );
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Inicio de sesión no disponible")),
+    );
+
   }
 
   @override
@@ -177,7 +182,7 @@ class _PantallaLoginState extends State<PantallaLogin> {
           
               Center(
                 child: ElevatedButton.icon(
-                  onPressed: () async { await NotificationService.lanzarNotificacionTestProgramada(1);},
+                  onPressed: () {navegarAdmin();},
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colores.googleButton, 
                     minimumSize: const Size(double.infinity, 50),

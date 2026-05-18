@@ -121,7 +121,7 @@ class _AgendaHomeState extends State<AgendaHome> {
                         backgroundColor: Colores.primaryTransparente, //Fondo color cian
                         foregroundColor: Colores.secondary, // Color del texto
                         elevation: 0, 
-                        side: const BorderSide(color: Colores.secondary, width: 2),
+                        side: BorderSide(color: Colores.secondary, width: 2),
                         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12), 
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
@@ -141,7 +141,7 @@ class _AgendaHomeState extends State<AgendaHome> {
                         backgroundColor: Colores.surface, // Fondo blanco no seleccionado
                         foregroundColor: Colores.secondary, 
                         elevation: 0, 
-                        side: const BorderSide(color: Colores.secondary, width: 2), 
+                        side: BorderSide(color: Colores.secondary, width: 2), 
                         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),

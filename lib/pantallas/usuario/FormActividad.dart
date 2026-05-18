@@ -104,7 +104,7 @@ class _FormActividadState extends State<FormActividad> {
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.light(
+            colorScheme: ColorScheme.light(
               primary: Colores.secondary, // Color de encabezado
               onPrimary: Colors.white, // Texto en encabezado
               onSurface: Colores.textPrimary, // Texto de los días
@@ -125,7 +125,7 @@ class _FormActividadState extends State<FormActividad> {
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.light(primary: Colores.secondary),
+            colorScheme: ColorScheme.light(primary: Colores.secondary),
           ),
           child: child!,
         );
@@ -239,12 +239,12 @@ Future<void> _guardarActividad() async {
         backgroundColor: Colores.background,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colores.secondary),
+          icon: Icon(Icons.arrow_back_ios_new_rounded, color: Colores.secondary),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
           widget.actividad == null ? 'Nueva Actividad' : 'Editar Actividad',
-          style: const TextStyle(color: Colores.secondary, fontWeight: FontWeight.bold, fontSize: 22),
+          style: TextStyle(color: Colores.secondary, fontWeight: FontWeight.bold, fontSize: 22),
         ),
       ),
       body: SafeArea(

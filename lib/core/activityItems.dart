@@ -125,7 +125,7 @@ Widget itemTarea({required BuildContext context, required ActivityData tarea}) {
             IconButton(
               constraints: const BoxConstraints(), 
               padding: EdgeInsets.zero,
-              icon: const Icon(Icons.edit_outlined, color: Colores.secondary, size: 24),
+              icon: Icon(Icons.edit_outlined, color: Colores.secondary, size: 24),
               onPressed: () {
                 Navigator.push(
                   context,
