@@ -119,13 +119,37 @@ class AppDatabase extends _$AppDatabase {
   }
 
   //Modificación
-  //Marcar como completada
+//Marcar como completada
   Future<void> marcarCompletada(int id) async {
+    // Desactiva la actividad de la vista principal
+    await (update(activity)..where((t) => t.id.equals(id))).write(ActivityCompanion(
+      isActive: const Value(false),
+    ));
+    // Guarda en el historial que SÍ se completó
+    await into(activityLogs).insert(ActivityLogsCompanion(
+      activityId: Value(id),
+      status: const Value('completado'),
+    ));
+  }
+
+  //Marcar como NO completada
+  Future<void> marcarFallida(int id) async {
+    // Desactiva la actividad de la vista principal
+    await (update(activity)..where((t) => t.id.equals(id))).write(ActivityCompanion(
+      isActive: const Value(false),
+    ));
+    // Guarda en el historial que NO se completó
+    await into(activityLogs).insert(ActivityLogsCompanion(
+      activityId: Value(id),
+      status: const Value('no_completado'),
+    ));
     await (update(activity)..where((t) => t.id.equals(id))).write(
       ActivityCompanion(isActive: Value(false)),
     );
   }
 
+
+  
   //Actualizar todos los datos de una tarea/hábito desde el formulario
   Future<bool> updateActivity(ActivityCompanion companion) {
     return update(activity).replace(companion);
@@ -134,6 +158,31 @@ class AppDatabase extends _$AppDatabase {
   //Eliminación
   Future<void> eliminarTarea(int id) async {
     await (delete(activity)..where((t) => t.id.equals(id))).go();
+  }
+
+//Obtener todas las actividades activas del usuario
+  Stream<List<ActivityData>> verTodasMisActividades(int userId) {
+    return (select(activity)..where((t) => t.userId.equals(userId) & t.isActive.equals(true))).watch();
+  }
+
+  //Tareas específicas de un día seleccionado 
+  Stream<List<ActivityData>> verTareasPorDia(int userId, DateTime dia) {
+    final inicioDia = DateTime(dia.year, dia.month, dia.day);
+    final finDia = DateTime(dia.year, dia.month, dia.day, 23, 59, 59);
+
+    return (select(activity)
+      ..where((t) =>
+          t.userId.equals(userId) &
+          t.isActive.equals(true) &
+          t.type.equals('Tarea') &
+          t.dueDate.isBetweenValues(inicioDia, finDia))
+      ..orderBy([(t) => OrderingTerm.asc(t.dueDate)])
+    ).watch();
+  }
+
+  // Hábitos para el historial semanal
+  Stream<List<ActivityData>> verMisHabitosHistorial(int userId) {
+    return (select(activity)..where((t) => t.userId.equals(userId) & t.type.equals('Hábito'))).watch();
   }
 
   //Dashboard - Administración
@@ -305,3 +354,4 @@ LazyDatabase _openConnection() {
     return NativeDatabase(file);
   });
 }
+

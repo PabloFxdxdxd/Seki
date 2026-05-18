@@ -186,22 +186,13 @@ class _AgendaHomeCompletedState extends State<AgendaHomeCompleted> {
                               itemCount: tareas.length,
                               itemBuilder: (context, index) {
                                 final tarea = tareas[index];
-                          
-                                //Este widget permite que el elemento se deslize
-                                return Dismissible(
-                                  key: Key(tarea.id.toString()),
-                                  direction: DismissDirection.endToStart,
-                                  onDismissed: (_) => globalDatabase.marcarCompletada(tarea.id),
-                                  background: containerVerdeDeFondo(),
+                                //Para que detecte cuando se mantiene presionado
+                                return GestureDetector(  
+                                  onLongPress: () => mostrarOpcionEliminar(tarea.id),
+                                  onTap: () => irADetalle(tarea),
                                   
-                                  //Para que detecte cuando se mantiene presionado
-                                  child: GestureDetector(  
-                                    onLongPress: () => mostrarOpcionEliminar(tarea.id),
-                                    onTap: () => irADetalle(tarea),
-                                    
-                                    // La decoración de la tarea: /core/activityItems.dart
-                                    child: itemTareaCompleted(context: context, tarea: tarea),
-                                  ),
+                                  // La decoración de la tarea: /core/activityItems.dart
+                                  child: itemTareaCompleted(context: context, tarea: tarea),
                                 );
                               },
                             );

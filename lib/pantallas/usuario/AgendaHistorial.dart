@@ -14,7 +14,7 @@ class AgendaHistorial extends StatelessWidget {
         iconTheme: const IconThemeData(color: Colores.textPrimary),
       ),
       body: const Center(
-        child: Text("Pantalla de Historial", 
+        child: Text("Pantalla de Historial Proximamente en la VERSIÓN 2.0   :)", 
           style: TextStyle(fontSize: 18, color: Colores.textPrimary)),
       ),
        bottomNavigationBar: BottomNavigationBar(
