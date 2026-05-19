@@ -73,7 +73,7 @@ class _AgendaCalendarioState extends State<AgendaCalendario> {
     return Scaffold(
       backgroundColor: Colores.background,
       appBar: AppBar(
-        title: const Text("Calendario", style: TextStyle(color: Colores.secondary, fontWeight: FontWeight.bold)),
+        title: Text("Calendario", style: TextStyle(color: Colores.secondary, fontWeight: FontWeight.bold)),
         backgroundColor: Colores.background,
         elevation: 0,
         centerTitle: true,
@@ -127,22 +127,22 @@ class _AgendaCalendarioState extends State<AgendaCalendario> {
                   eventLoader: (day) {
                     return eventosPorDia[DateTime(day.year, day.month, day.day)] ?? [];
                   },
-                  headerStyle: const HeaderStyle(
+                  headerStyle: HeaderStyle(
                     formatButtonVisible: false,
                     titleCentered: true,
                     titleTextStyle: TextStyle(color: Colores.secondary, fontSize: 18, fontWeight: FontWeight.bold),
                     leftChevronIcon: Icon(Icons.chevron_left, color: Colores.secondary),
                     rightChevronIcon: Icon(Icons.chevron_right, color: Colores.secondary),
                   ),
-                  daysOfWeekStyle: const DaysOfWeekStyle(
+                  daysOfWeekStyle: DaysOfWeekStyle(
                     weekdayStyle: TextStyle(color: Colores.secondary, fontWeight: FontWeight.bold),
                     weekendStyle: TextStyle(color: Colores.secondary, fontWeight: FontWeight.bold),
                   ),
                   calendarStyle: CalendarStyle(
-                    defaultTextStyle: const TextStyle(color: Colores.secondary, fontWeight: FontWeight.w600),
-                    weekendTextStyle: const TextStyle(color: Colores.secondary, fontWeight: FontWeight.w600),
+                    defaultTextStyle: TextStyle(color: Colores.secondary, fontWeight: FontWeight.w600),
+                    weekendTextStyle: TextStyle(color: Colores.secondary, fontWeight: FontWeight.w600),
                     outsideDaysVisible: false,
-                    selectedDecoration: const BoxDecoration(
+                    selectedDecoration: BoxDecoration(
                       color: Colores.secondary, 
                       shape: BoxShape.circle, 
                     ),
@@ -151,7 +151,7 @@ class _AgendaCalendarioState extends State<AgendaCalendario> {
                       color: Colores.secondary.withOpacity(0.3),
                       shape: BoxShape.circle,
                     ),
-                    todayTextStyle: const TextStyle(color: Colores.secondary, fontWeight: FontWeight.bold),
+                    todayTextStyle: TextStyle(color: Colores.secondary, fontWeight: FontWeight.bold),
                   ),
                   calendarBuilders: CalendarBuilders(
                     markerBuilder: (context, day, events) {

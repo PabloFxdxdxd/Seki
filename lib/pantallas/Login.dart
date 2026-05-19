@@ -59,8 +59,20 @@ class _PantallaLoginState extends State<PantallaLogin> {
     Navigator.pushNamed(context, '/signin');
   }
   //Entra a admin temporalmente
-  void navegarAdmin(){
-    Navigator.pushNamed(context, '/admin');
+  void insertarAdmin(){
+    globalDatabase.insertUser(
+      UserCompanion(
+        name: d.Value("admin"),
+        email: d.Value("admin@test.com"),
+        password: d.Value("1234"),
+        type: d.Value("admin"),
+        createdAt: d.Value(DateTime.now())
+      )
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Ya eres admin")),
+    );
   }
 
   void funcGoogle(){
@@ -182,17 +194,18 @@ class _PantallaLoginState extends State<PantallaLogin> {
           
               Center(
                 child: ElevatedButton.icon(
-                  onPressed: () {navegarAdmin();},
+                  onLongPress: (){insertarAdmin();}, //Para tener un admin inicial
+                  onPressed: (){funcGoogle();},
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colores.googleButton, 
+                    backgroundColor: Colores.iconBackground, 
                     minimumSize: const Size(double.infinity, 50),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                   ),
                   icon: Image.asset('assets/icons/google.png', height: 24),
                   label: const Text(
-                    "Continuar con Google (Temp)",
+                    "Continuar con Google",
                     style: TextStyle(
-                      color: Colores.background, 
+                      color: Colores.textPrimary, 
                       fontSize: 15
                   )
                 )
