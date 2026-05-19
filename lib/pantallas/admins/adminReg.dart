@@ -1,5 +1,5 @@
+// ignore: file_names
 import 'package:flutter/material.dart';
-import 'package:proyect_seki/core/Colores.dart';
 import 'package:proyect_seki/core/adminTheme.dart';
 import 'package:proyect_seki/database/database.dart'; //Donde están las funciones de la base de datos
 import 'package:drift/drift.dart' as d;

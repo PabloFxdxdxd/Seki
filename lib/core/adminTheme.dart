@@ -8,16 +8,16 @@ class AdminColors {
   static const Color background = Color(0xFFFFFFFF);
 
   //cards
-  static const Color surface = Color(0xFF1E2E2E); // card oscura
+  static const Color surface = Color(0xFF1E2E2E); //card oscura
   static const Color surfaceDark = Color(0xFF152222);
 
   //text
   static const Color textPrimary = Color(0xFFE8F8F7);
-  static const Color textSecondary = Color(0xFF8DEAE6); // primary
-  static const Color textMuted = Color(0xFF5A9490); // apagado
+  static const Color textSecondary = Color(0xFF8DEAE6); //primary
+  static const Color textMuted = Color(0xFF5A9490); //apagado
 
   //estados
-  static const Color successLight = Color(0x3327A49E); // 20% opacidad
+  static const Color successLight = Color(0x3327A49E); //20% opacidad
   static const Color error = Color(0xFFE05C5C);
   //bordes
   static const Color border = Color(0xFF2E4444);

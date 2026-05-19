@@ -1,5 +1,5 @@
+// ignore: file_names
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 import 'package:proyect_seki/database/database.dart';
 import 'package:proyect_seki/core/Colores.dart';
 import 'package:intl/intl.dart'; //para formatear fechas
@@ -7,13 +7,12 @@ import 'package:proyect_seki/pantallas/usuario/FormActividad.dart'; //Formulario
 
 //Esta es la estructura de las tarjetas que se generan en la pantalla AgendaHome
 Widget itemTarea({required BuildContext context, required ActivityData tarea}) {
-  
-  //logica para el color pastel izquierdo 
+  //logica para el color pastel izquierdo
   final List<Color> coloresPastel = [
-    const Color(0xFFFFB3BA), 
+    const Color(0xFFFFB3BA),
     const Color(0xFFFFDFBA),
     const Color(0xFFFFFFBA),
-    const Color(0xFFBAFFC9), 
+    const Color(0xFFBAFFC9),
     const Color(0xFFBAE1FF),
     const Color(0xFFE2CBF7),
   ];
@@ -26,26 +25,26 @@ Widget itemTarea({required BuildContext context, required ActivityData tarea}) {
 
   switch (tarea.priority?.toLowerCase()) {
     case 'alta':
-      colorPrioridad = Colores.prioridadAlta; // Rojo
+      colorPrioridad = Colores.prioridadAlta; //Rojo
       textoPrioridad = 'Alta';
       break;
     case 'media':
-      colorPrioridad = Colores.prioridadMedia; // Naranja
+      colorPrioridad = Colores.prioridadMedia; //Naranja
       textoPrioridad = 'Media';
       break;
     case 'baja':
     default:
-      colorPrioridad = Colores.prioridadBaja; // Verde
+      colorPrioridad = Colores.prioridadBaja; //Verde
       textoPrioridad = 'Baja';
       break;
   }
-  
+
   // 2. Formateo de fechas
-  String fechaVencimiento = tarea.dueDate != null 
-      ? DateFormat('dd MMM, hh:mm a').format(tarea.dueDate!) 
+  String fechaVencimiento = tarea.dueDate != null
+      ? DateFormat('dd MMM, hh:mm a').format(tarea.dueDate!)
       : "Sin fecha";
-  String fechaRecordatorio = tarea.reminderTime != null 
-      ? DateFormat('hh:mm a').format(tarea.reminderTime!) 
+  String fechaRecordatorio = tarea.reminderTime != null
+      ? DateFormat('hh:mm a').format(tarea.reminderTime!)
       : "Sin aviso";
 
   // Identificadores visuales
@@ -58,13 +57,15 @@ Widget itemTarea({required BuildContext context, required ActivityData tarea}) {
     decoration: BoxDecoration(
       color: Colores.surface,
       borderRadius: BorderRadius.circular(15),
-      border: Border(left: BorderSide(color: colorBorde, width: 8)), 
-      boxShadow: const [BoxShadow(color: Colores.sombra, blurRadius: 10, offset: Offset(0, 4))],
+      border: Border(left: BorderSide(color: colorBorde, width: 8)),
+      boxShadow: const [
+        BoxShadow(color: Colores.sombra, blurRadius: 10, offset: Offset(0, 4)),
+      ],
     ),
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        // Ícono dinámico (Reloj para hábito, Campana para tarea)
+        //icono dinámico (Reloj para hábito, Campana para tarea)
         Icon(iconoPrincipal, color: Colores.textSecondary, size: 28),
         const SizedBox(width: 12),
 
@@ -72,29 +73,63 @@ Widget itemTarea({required BuildContext context, required ActivityData tarea}) {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(tarea.type ?? "Actividad", style: const TextStyle(fontWeight: FontWeight.bold, color: Colores.textSecondary, fontSize: 12)),
-              Text(tarea.title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: Colores.textPrimary)),
+              Text(
+                tarea.type ?? "Actividad",
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colores.textSecondary,
+                  fontSize: 12,
+                ),
+              ),
+              Text(
+                tarea.title,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 17,
+                  color: Colores.textPrimary,
+                ),
+              ),
               const SizedBox(height: 6),
-              
-              // Uso de WRAP para evitar desbordamiento amarillo
+
+              //Uso de WRAP para evitar desbordamiento amarillo
               Wrap(
-                spacing: 10, // Espacio horizontal
-                runSpacing: 4, // Espacio vertical si hace salto de línea
+                spacing: 10, //Espacio horizontal
+                runSpacing: 4, //Espacio vertical si hace salto de línea
                 children: [
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.calendar_today, size: 12, color: Colores.textSecondary),
+                      const Icon(
+                        Icons.calendar_today,
+                        size: 12,
+                        color: Colores.textSecondary,
+                      ),
                       const SizedBox(width: 4),
-                      Text(fechaVencimiento, style: const TextStyle(fontSize: 11, color: Colores.textSecondary)),
+                      Text(
+                        fechaVencimiento,
+                        style: const TextStyle(
+                          fontSize: 11,
+                          color: Colores.textSecondary,
+                        ),
+                      ),
                     ],
                   ),
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.access_time, size: 12, color: Colores.textSecondary),
+                      const Icon(
+                        Icons.access_time,
+                        size: 12,
+                        color: Colores.textSecondary,
+                      ),
                       const SizedBox(width: 4),
-                      Text(fechaRecordatorio, style: const TextStyle(fontSize: 11, color: Colores.textSecondary)),
+                      Text(
+                        fechaRecordatorio,
+                        style: const TextStyle(
+                          fontSize: 11,
+                          color: Colores.textSecondary,
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -103,12 +138,12 @@ Widget itemTarea({required BuildContext context, required ActivityData tarea}) {
           ),
         ),
 
-        // Lado derecho: Prioridad y Editar
+        //Lado derecho: Prioridad y Editar
         Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            // Solo muestra la cápsula de prioridad si NO es un hábito
-            if (!esHabito && tarea.priority != null) 
+            //Solo muestra la cápsula de prioridad si no es un hábito
+            if (!esHabito && tarea.priority != null)
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
@@ -116,20 +151,33 @@ Widget itemTarea({required BuildContext context, required ActivityData tarea}) {
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(color: colorPrioridad, width: 1),
                 ),
-                child: Text(textoPrioridad, style: TextStyle(color: colorPrioridad, fontWeight: FontWeight.bold, fontSize: 10)),
+                child: Text(
+                  textoPrioridad,
+                  style: TextStyle(
+                    color: colorPrioridad,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 10,
+                  ),
+                ),
               ),
-            
+
             SizedBox(height: esHabito ? 0 : 8),
-            
-            // Lápiz para Editar
+
+            //Lápiz para Editar
             IconButton(
-              constraints: const BoxConstraints(), 
+              constraints: const BoxConstraints(),
               padding: EdgeInsets.zero,
-              icon: Icon(Icons.edit_outlined, color: Colores.secondary, size: 24),
+              icon: Icon(
+                Icons.edit_outlined,
+                color: Colores.secondary,
+                size: 24,
+              ),
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => FormActividad(actividad: tarea)) 
+                  MaterialPageRoute(
+                    builder: (context) => FormActividad(actividad: tarea),
+                  ),
                 );
               },
             ),
@@ -140,7 +188,7 @@ Widget itemTarea({required BuildContext context, required ActivityData tarea}) {
   );
 }
 
-// Este es un contenedor verde que se muestra cuando una tarea está marcada como completada
+//Este es un contenedor verde que se muestra cuando una tarea está marcada como completada
 Widget containerVerdeDeFondo() {
   return Container(
     color: Colores.primaryTransparente,
@@ -149,7 +197,13 @@ Widget containerVerdeDeFondo() {
     child: const Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        Text("Completado", style: TextStyle(color: Colores.background, fontWeight: FontWeight.bold)),
+        Text(
+          "Completado",
+          style: TextStyle(
+            color: Colores.background,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         SizedBox(width: 10),
         Icon(Icons.check, color: Colores.background),
       ],
@@ -157,18 +211,25 @@ Widget containerVerdeDeFondo() {
   );
 }
 
-// Este es un contenedor rojo que se muestra cuando se desliza a la derecha (No completado)
+//Este es un contenedor rojo que se muestra cuando se desliza a la derecha (No completado)
 Widget containerRojoDeFondo() {
   return Container(
-    color: Colores.error, // Color rojo de tu paleta
-    alignment: Alignment.centerLeft, // Alineado a la izquierda porque deslizarás desde ahí
+    color: Colores.error, //Color rojo de tu paleta
+    alignment: Alignment
+        .centerLeft, //Alineado a la izquierda porque deslizarás desde ahí
     padding: const EdgeInsets.symmetric(horizontal: 20),
     child: const Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Icon(Icons.close, color: Colores.background),
         SizedBox(width: 10),
-        Text("No completado", style: TextStyle(color: Colores.background, fontWeight: FontWeight.bold)),
+        Text(
+          "No completado",
+          style: TextStyle(
+            color: Colores.background,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ],
     ),
   );

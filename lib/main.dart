@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:proyect_seki/core/Colores.dart';
 import 'package:proyect_seki/core/Notifications.dart';
 import 'package:proyect_seki/database/database.dart';
 import 'package:proyect_seki/pantallas/Home.dart';
-
-
 
 //Importación de pantallas
 
@@ -21,7 +18,6 @@ import 'package:proyect_seki/pantallas/usuario/FormActividad.dart';
 
 late AppDatabase globalDatabase;
 UserData? currentUser;
-
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,9 +37,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF8DEAE6)),
       ),
-      
-      // 3. Definimos la navegación por nombres
-      initialRoute: '/', // La ruta que carga al abrir la app
+
+      //Definimos la navegación por nombres
+      initialRoute: '/', //La ruta que carga al abrir la app
       routes: {
         '/': (context) => PantallaLogin(),
         '/agendaHome': (context) => AgendaHome(),

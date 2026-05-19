@@ -3,7 +3,6 @@ import 'package:proyect_seki/core/Fecha.dart';
 
 import 'package:proyect_seki/core/adminTheme.dart';
 import 'package:proyect_seki/database/database.dart'; //Donde están las funciones de la base de datos
-import 'package:drift/drift.dart' as d;
 import 'package:proyect_seki/main.dart';
 import 'package:proyect_seki/pantallas/admins/barchart.dart';
 
@@ -24,7 +23,6 @@ class _PantallaDashboardState extends State<PantallaDashboard> {
   void eliminar() {
     print("Usuario Eliminado");
   }
-
 
   late Future<int> _totalUsuarios;
   late Future<int> _habitosActivos;
